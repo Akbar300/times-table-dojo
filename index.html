@@ -1,0 +1,1653 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Times Table Dojo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#FFF5FA; --dot:#FFD9EA; --paper:#FFFFFF; --ink:#3B2A4A; --ink2:#6E5A7E;
+  --pink:#FF8FB8; --pinkS:#FFE3EE; --sky:#8FD3FF; --skyS:#E4F5FF; --lemon:#FFE27A; --lemonS:#FFF6D1;
+  --mint:#8EEBC2; --mintS:#DFF9EC; --tang:#FFB36B; --lilac:#B79CFF; --lilacS:#EFE8FF;
+  --good:#16935F; --bad:#D63A72; --line:#F2D3E3;
+  --disp:"Mochiy Pop One","Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,sans-serif;
+  --body:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Nunito",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{background-color:var(--bg);background-image:radial-gradient(var(--dot) 1.6px,transparent 1.8px);background-size:22px 22px;color:var(--ink);font-family:var(--body);font-weight:500;font-size:16px;line-height:1.55}
+h1,h2,h3,h4{font-family:var(--disp);font-weight:400;line-height:1.2;text-wrap:balance;margin:0}
+p{margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:0 56px}
+.num{font-variant-numeric:tabular-nums}
+.btn{font-family:var(--disp);font-size:14px;color:var(--ink);padding:9px 16px;border:2.5px solid var(--ink);border-radius:999px;background:var(--lemon);box-shadow:3px 3px 0 var(--ink);cursor:pointer;transition:transform .08s,box-shadow .08s;line-height:1.2}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:3px 3px 0 var(--ink)}
+.btn.pink{background:var(--pink)} .btn.sky{background:var(--sky)} .btn.mint{background:var(--mint)} .btn.lilac{background:var(--lilac)} .btn.white{background:#fff}
+.btn.sm{font-size:12px;padding:6px 11px;box-shadow:2px 2px 0 var(--ink);border-width:2px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px dashed var(--pink);outline-offset:3px}
+.sticker{background:var(--paper);border:2.5px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--ink)}
+
+/* hero */
+.hero{display:grid;gap:18px;padding-block:28px 22px}
+.parade{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-end}
+.parade .mascot{animation:bob 2.6s ease-in-out infinite}
+.parade .mascot:nth-child(2){animation-delay:-.4s}.parade .mascot:nth-child(3){animation-delay:-.9s}.parade .mascot:nth-child(4){animation-delay:-1.3s}.parade .mascot:nth-child(5){animation-delay:-1.8s}.parade .mascot:nth-child(6){animation-delay:-2.2s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.eyebrow{font-family:var(--disp);font-size:13px;letter-spacing:.08em;color:var(--ink2);text-transform:uppercase}
+.hero h1{font-size:clamp(34px,7vw,64px);letter-spacing:-.01em}
+.hero h1 span{color:var(--pink);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill}
+.hero .lede{max-width:60ch;font-size:17px;color:var(--ink2)}
+.hud{display:flex;flex-wrap:wrap;gap:12px;align-items:stretch;padding:14px 16px}
+.hud .lv{display:grid;gap:6px;flex:1 1 220px}
+.hud .lvtop{display:flex;justify-content:space-between;font-family:var(--disp);font-size:14px}
+.xpbar{height:16px;border:2.5px solid var(--ink);border-radius:99px;background:var(--pinkS);overflow:hidden}
+.xpbar i{display:block;height:100%;width:0;background:repeating-linear-gradient(135deg,var(--pink) 0 10px,#FFA8CA 10px 20px);transition:width .5s}
+.pill{display:flex;flex-direction:column;justify-content:center;padding:6px 14px;border-radius:16px;background:var(--lemonS);border:2px solid var(--ink);min-width:88px}
+.pill b{font-family:var(--disp);font-size:20px;font-weight:400}
+.pill small{font-size:12px;color:var(--ink2)}
+.badges{display:flex;flex-wrap:wrap;gap:8px;flex:1 1 100%}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 5px;border-radius:99px;border:2px dashed #CDB9D8;color:#A694B2;font-size:13px;font-weight:700;background:#fff}
+.badge .bd{width:22px;height:22px;border-radius:50%;background:#EEE5F2;display:grid;place-items:center;font-size:12px}
+.badge.on{border-style:solid;border-color:var(--ink);color:var(--ink);background:var(--lemonS)}
+.badge.on .bd{background:var(--pink);color:#fff}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(255,245,250,.93);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:2px solid var(--line);margin-inline:-16px;padding:8px 16px}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.nav button.tabbtn{appearance:none;-webkit-appearance:none;display:block;white-space:nowrap;font-family:var(--disp);font-size:13px;color:var(--ink);text-decoration:none;padding:7px 13px;border-radius:99px;border:2px solid var(--ink);background:#fff;cursor:pointer}
+.nav button.tabbtn:hover{background:var(--pinkS)}
+.nav button.tabbtn.active{background:var(--ink);color:#fff}
+
+/* sections */
+section.unit{padding-top:40px;display:grid;gap:22px;scroll-margin-top:64px}
+.unit-head{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.unit-tag{font-family:var(--disp);font-size:12px;padding:4px 10px;border-radius:99px;background:var(--ink);color:#fff;letter-spacing:.05em}
+.unit-head h2{font-size:clamp(26px,4.6vw,40px)}
+.bubble{position:relative;background:#fff;border:2.5px solid var(--ink);border-radius:18px;padding:10px 14px;max-width:560px;font-weight:700}
+.say{display:flex;gap:10px;align-items:center}
+.say .mascot{flex:none}
+.sub{font-family:var(--disp);font-size:20px;display:flex;align-items:center;gap:10px}
+.sub .chip{font-family:var(--body);font-weight:900;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--lilacS);color:#5B3FB5}
+
+.learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.lcard{background:#fff;border:2px solid var(--line);border-radius:20px;padding:16px;display:grid;gap:10px;align-content:start}
+.lcard h3{font-size:17px}
+.lcard ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.lcard .ex{background:var(--skyS);border-radius:12px;padding:8px 10px;font-size:15px}
+.cycle{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.cycle div{border-radius:14px;padding:8px;text-align:center;font-weight:700;font-size:14px;border:2px solid var(--ink)}
+.cycle b{display:block;font-family:var(--disp);font-weight:400;font-size:12px;color:var(--ink2)}
+.pv{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;text-align:center}
+.pv div{border-radius:10px;padding:6px 2px;background:var(--lilacS);font-size:10.5px;font-weight:700;line-height:1.2}
+.pv div b{display:block;font-family:var(--disp);font-weight:400;font-size:22px;margin-top:3px}
+.pv div.hl{background:var(--pink);color:#fff}
+.ways{display:grid;gap:6px}
+.ways div{display:flex;justify-content:space-between;gap:8px;background:var(--mintS);border-radius:10px;padding:6px 10px;font-size:14px}
+.fpDiagram{display:flex;align-items:flex-start;justify-content:center;gap:6px;flex-wrap:wrap;padding:4px 0 2px}
+.fpCol{display:grid;justify-items:center;gap:5px}
+.fpNum{font-family:var(--disp);font-size:21px;padding:6px 13px;border-radius:12px;border:2.5px solid var(--ink);background:#fff;min-width:34px;text-align:center}
+.fpLine{width:2.5px;height:9px;border-radius:2px}
+.fpLbl{font-size:10.5px;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
+.fpOp{font-family:var(--disp);font-size:19px;color:var(--ink2);align-self:center;margin-top:12px}
+
+/* multiples visuals */
+.numstrip{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-top:2px}
+.numstrip span{background:#fff;border-radius:6px;padding:4px 0;text-align:center;font-size:11px;font-weight:700;border:1.5px solid var(--line)}
+.numstrip span.hl{background:var(--pink);color:#fff;border-color:var(--ink)}
+.numstrip.tap span{cursor:pointer;transition:transform .08s,background .08s}
+.numstrip.tap span:hover{background:var(--lemonS)}
+.numstrip.tap span.no{background:#FFC9DA;animation:shake .35s}
+.buildstrip{display:grid;gap:6px}
+.bgroup{display:flex;align-items:center;gap:3px;flex-wrap:wrap;background:var(--mintS);border-radius:10px;padding:6px 8px}
+.bgroup i{width:10px;height:10px;border-radius:50%;background:var(--pink);border:1.5px solid var(--ink);flex:none}
+.bgroup b{margin-left:auto;font-family:var(--disp);font-weight:400;font-size:16px;padding-left:8px}
+.lvis{background:var(--skyS);border-radius:12px;padding:8px;margin-top:2px;overflow-x:auto}
+.lvis svg{display:block;width:100%;max-width:260px;height:auto;margin:0 auto}
+
+/* 2D labs */
+.lab{padding:16px;display:grid;gap:14px}
+.lab-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.lab-head h3{font-size:22px}
+.lab-head p{color:var(--ink2);max-width:52ch;font-size:15px;margin-top:4px}
+.stage{position:relative;height:clamp(300px,50vw,430px);border-radius:18px;overflow:hidden;background:linear-gradient(#E6F6FF,#FFF0F7 75%);border:2.5px solid var(--ink);display:grid;place-items:center;padding:10px}
+.stage svg{display:block;width:100%;height:100%;max-height:100%}
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:14px;align-items:start}
+.side{display:grid;gap:12px;align-content:start}
+.panel{background:var(--bg);border-radius:16px;padding:12px;border:2px solid var(--line);display:grid;gap:8px}
+.panel h4{font-size:14px}
+.voters{display:grid;gap:6px}
+.voter{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:5px 6px 5px 10px;border:2px solid var(--line)}
+.voter .sw{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink);flex:none}
+.voter .nm{flex:1;font-weight:700}
+.voter .ct{font-family:var(--disp);min-width:24px;text-align:center}
+.rbtn{width:32px;height:32px;border-radius:50%;border:2px solid var(--ink);background:#fff;font-family:var(--disp);font-size:16px;cursor:pointer;color:var(--ink);line-height:1}
+.rbtn:hover{background:var(--lemonS)}
+.rbtn:disabled{opacity:.35;cursor:not-allowed}
+.skcrow{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 4px}
+.skcbtn{width:30px;height:30px;border-radius:50%;border:2px solid var(--ink);background:#fff;font-family:var(--disp);font-size:13px;cursor:pointer;color:var(--ink);line-height:1;padding:0;transition:transform .08s,background .08s}
+.skcbtn:hover{background:var(--lemonS)}
+.skcbtn.on{background:var(--pink);color:#fff;transform:scale(1.08)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.facts{margin:0;padding:0;list-style:none;display:grid;gap:5px;font-size:14.5px}
+.facts li{background:#fff;border-radius:10px;padding:5px 9px}
+.readout{display:grid;gap:6px}
+.readout div{display:grid;grid-template-columns:92px 1fr;gap:8px;align-items:baseline;background:#fff;border-radius:10px;padding:6px 10px;font-size:14.5px}
+.readout div span:first-child{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.readout .big{font-family:var(--disp);font-size:26px}
+.seg{display:inline-flex;border:2.5px solid var(--ink);border-radius:99px;overflow:hidden;background:#fff}
+.seg button{font-family:var(--disp);font-size:13px;padding:7px 13px;border:0;background:transparent;color:var(--ink);cursor:pointer}
+.seg button.on{background:var(--ink);color:#fff}
+.inp{font-family:var(--disp);font-size:18px;width:120px;padding:7px 12px;border:2.5px solid var(--ink);border-radius:14px;background:#fff;color:var(--ink)}
+.say-box{background:var(--lemonS);border-radius:14px;padding:10px 12px;font-weight:700;font-size:15px;border:2px solid var(--ink)}
+
+/* practice pod */
+.pod{padding:16px;display:grid;gap:14px}
+.pod-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.pod-stat{font-family:var(--disp);font-size:13px;background:var(--pinkS);border-radius:99px;padding:6px 12px}
+.qcard{display:grid;gap:12px}
+.qvis:empty{display:none}
+.qvis{background:var(--bg);border-radius:16px;padding:12px;overflow-x:auto}
+.qvis svg{display:block;width:100%;max-width:440px;margin:0 auto;height:auto}
+.qp{font-size:19px;font-weight:700;max-width:60ch}
+.qp .big{font-family:var(--disp);font-weight:400;font-size:24px;letter-spacing:.02em}
+mark.hd{background:var(--pink);color:#fff;border-radius:6px;padding:0 4px}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.choice{font-family:var(--body);font-weight:900;font-size:17px;padding:12px 10px;border:2.5px solid var(--ink);border-radius:16px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--ink);text-align:center;transition:transform .08s}
+.choice:hover{background:var(--lemonS)}
+.choice:disabled{cursor:default}
+.choice.right{background:var(--mint)}
+.choice.wrong{background:#FFC9DA;animation:shake .35s}
+.choice.sym3{font-family:var(--disp);font-size:24px}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.ansrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fb{display:flex;align-items:center;gap:10px;font-weight:700;min-height:48px}
+.fb.good{color:var(--good)} .fb.bad{color:var(--bad)}
+.explain{background:var(--lilacS);border-radius:14px;padding:10px 14px;font-size:15px;border:2px solid #D8CBFF}
+.explain b{font-family:var(--disp);font-weight:400}
+.qbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+
+.mascot{cursor:pointer}
+
+/* multiplication table */
+.mtable-scroll{overflow-x:auto}
+.mtable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--disp);text-align:center}
+.mtable th,.mtable td{border:1.5px solid var(--line);padding:6px 2px;font-size:13px;min-width:28px}
+.mtable thead th{background:var(--lilacS);color:#5B3FB5;position:sticky;top:0}
+.mtable tbody th{background:var(--lilacS);color:#5B3FB5}
+.mtable td{background:#fff;cursor:pointer;transition:background .1s,color .1s}
+.mtable td.hl-row,.mtable td.hl-col{background:var(--lemonS)}
+.mtable td.hl-cell{background:var(--pink);color:#fff}
+.mtable td.blank{color:transparent;background:#F4EEF8}
+.mtable td.blank.revealed{color:var(--ink);background:var(--mint)}
+
+/* boss / mock */
+.boss-bar{display:flex;gap:5px;flex-wrap:wrap}
+.boss-bar i{width:22px;height:10px;border-radius:99px;background:#EEE3F3;border:2px solid var(--ink)}
+.boss-bar i.ok{background:var(--mint)} .boss-bar i.no{background:var(--pink)} .boss-bar i.cur{background:var(--lemon)}
+.stars{font-size:40px;letter-spacing:6px;color:#F5B800;-webkit-text-stroke:1.5px var(--ink)}
+
+/* dojo belts */
+.beltrow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.belt{display:grid;justify-items:center;gap:4px;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:8px 4px;cursor:pointer;font-family:var(--disp)}
+.belt .dot{width:26px;height:26px;border-radius:50%;border:2.5px solid var(--ink);display:grid;place-items:center;font-size:12px;color:#fff;font-weight:900}
+.belt .n{font-size:13px}
+.belt.on{background:var(--lemonS)}
+.belt.earned .dot::after{content:"✓";color:#fff}
+.beltbar{height:12px;border:2px solid var(--ink);border-radius:99px;background:var(--pinkS);overflow:hidden}
+.beltbar i{display:block;height:100%;width:0;background:var(--mint);transition:width .4s}
+.tri-wrap{display:grid;place-items:center;padding:10px}
+.tri{position:relative;width:min(320px,90%);aspect-ratio:1/.87}
+.tri svg{width:100%;height:100%;display:block}
+.tri .tnum{position:absolute;font-family:var(--disp);font-size:26px;background:#fff;border:2.5px solid var(--ink);border-radius:50%;width:56px;height:56px;display:grid;place-items:center}
+.tri .t1{top:0;left:50%;transform:translate(-50%,-10%)}
+.tri .t2{bottom:0;left:0;transform:translate(-10%,10%)}
+.tri .t3{bottom:0;right:0;transform:translate(10%,10%)}
+.famlist{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-family:var(--disp);font-size:17px;text-align:center}
+.famlist li{background:#fff;border:2px solid var(--line);border-radius:10px;padding:6px}
+
+/* parent corner */
+details.pc{background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px 16px}
+details.pc summary{font-family:var(--disp);cursor:pointer;font-size:16px}
+details.pc[open] summary{margin-bottom:8px}
+details.pc ul{margin:6px 0 0;padding-left:20px;display:grid;gap:4px;font-size:15px}
+.pc-grid{display:grid;gap:10px}
+footer{margin-top:40px;font-size:13px;color:var(--ink2);text-align:center}
+footer a{color:var(--ink)}
+
+/* overlay, toast */
+.overlay{position:fixed;inset:0;background:rgba(59,42,74,.5);display:grid;place-items:center;z-index:60;padding:16px}
+.ov-card{max-width:400px;width:100%;padding:22px;display:grid;gap:12px;justify-items:center;text-align:center}
+.ov-card h3{font-size:24px}
+.ov-card .move{font-size:18px;font-weight:700}
+.ov-timer{font-family:var(--disp);font-size:44px}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);background:var(--ink);color:#fff;font-family:var(--disp);font-size:14px;padding:10px 18px;border-radius:99px;z-index:70;transition:transform .3s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{transform:translate(-50%,0)}
+
+@media (max-width:760px){
+  .lab-grid{grid-template-columns:minmax(0,1fr)}
+  .beltrow{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:420px){
+  .choices{grid-template-columns:minmax(0,1fr)}
+  .beltrow{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  .parade .mascot{animation:none}
+  .choice.wrong{animation:none}
+  *{scroll-behavior:auto}
+}
+
+@media (max-width:480px){.nav button.tabbtn{font-size:12px;padding:6px 9px}.nav ul{gap:5px}}
+/* compact header */
+.hero{gap:8px;padding-block:10px 6px}
+.parade{flex-wrap:nowrap;justify-content:center;gap:2px}
+.parade .mascot{width:min(64px,14.5vw);height:min(64px,14.5vw)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hud.slim{flex-wrap:nowrap;align-items:center;gap:8px;padding:8px 12px}
+.hud.slim .lv{flex:1 1 0;min-width:0;gap:4px}
+.hud.slim .xpbar{height:11px}
+.hud.slim .lvtop{font-size:13px}
+.hud.more{padding:12px 14px}
+.hud.more[hidden]{display:none}
+.hud.more .eyebrow{flex:1 1 100%}
+section.unit{padding-top:12px}
+details.gu>summary{cursor:pointer;font-family:var(--disp);font-size:15px;color:var(--ink2);padding:8px 0}
+/* Table Studio */
+.tchips{display:flex;flex-wrap:wrap;gap:14px 8px;justify-content:center;padding-top:10px}
+.tchip{position:relative;min-width:46px;height:46px;padding:0 10px;border-radius:14px;border:2.5px solid var(--ink);background:#fff;font-family:var(--disp);font-size:18px;color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.tchip:hover{background:var(--lemonS)}
+.tchip.on{background:var(--pink);color:#fff;transform:translateY(-2px)}
+.tchip.done::after{content:"✓";position:absolute;right:-6px;top:-8px;width:20px;height:20px;border-radius:50%;background:var(--mint);color:var(--ink);font-size:12px;display:grid;place-items:center;border:2px solid var(--ink)}
+.tchip.bonus{border-style:dashed}
+.tchip.known{background:var(--mintS)}
+.tchip.now{background:var(--lemon)}
+.tchip.now::before{content:"now";position:absolute;left:50%;top:-10px;transform:translateX(-50%);font-family:var(--body);font-weight:900;font-size:10px;letter-spacing:.06em;background:var(--ink);color:#fff;border-radius:99px;padding:1px 6px}
+.tchip.on{background:var(--pink)!important;color:#fff}
+.thead{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:var(--tbg,var(--lemonS));border:2.5px solid var(--ink);border-radius:20px;padding:12px 16px}
+.thead h3{font-family:var(--disp);font-size:24px;line-height:1.1;font-weight:400}
+.thead p{margin:2px 0 0;font-size:15px;color:var(--ink)}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}
+.tgrid>*{min-width:0}
+.tcard{background:#fff;border:2px solid var(--line);border-radius:20px;padding:14px;display:grid;gap:10px;align-content:start}
+.tcard h4{font-family:var(--disp);font-size:17px;font-weight:400;display:flex;gap:8px;align-items:center}
+.tcard h4 em{font-style:normal;font-family:var(--body);font-weight:900;font-size:11px;letter-spacing:.08em;background:var(--lilacS);color:#5B3FB5;border-radius:6px;padding:2px 7px}
+.tcard.wide{grid-column:1/-1}
+.hopbox{background:var(--skyS);border-radius:14px;padding:8px;overflow-x:auto}
+.hopbox svg{display:block;min-width:430px;width:100%;height:auto}
+.hopsay{font-size:15px;min-height:44px}
+.circrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.circ{width:58px;height:58px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;font-family:var(--disp);font-size:18px;text-align:center;color:var(--ink);padding:0;min-width:0}
+.circ.given{background:var(--lemonS)}
+.circ.ok{background:var(--mintS);border-color:var(--good)}
+.circ.no{background:var(--pinkS);border-color:var(--bad)}
+.circrow .arr{font-family:var(--disp);color:var(--ink2)}
+.ladder{display:grid;gap:5px}
+.lrow{display:grid;grid-template-columns:5.2em 1fr 3em;gap:8px;align-items:center;border-radius:10px;padding:4px 8px;background:var(--bg)}
+.lrow:nth-child(even){background:var(--mintS)}
+.lrow .eq{font-family:var(--disp);font-size:16px;white-space:nowrap}
+.lrow .dots{display:flex;flex-wrap:wrap;gap:4px;align-items:center;line-height:0}
+.lrow .dots i{display:inline-flex;gap:1.5px;padding:2px 3px;border-radius:6px;background:#fff;border:1.5px solid var(--ink)}
+.lrow .dots i b{width:6px;height:6px;border-radius:50%;background:var(--c,#FF9EC4)}
+.lrow .ans{font-family:var(--disp);font-size:17px;text-align:right}
+.ladder.cover .ans{background:var(--ink);color:var(--ink);border-radius:8px;cursor:pointer;user-select:none}
+.ladder.cover .ans.show{background:transparent;color:var(--ink)}
+.trick{background:var(--lemonS);border-radius:14px;padding:10px 12px;font-size:15px;display:grid;gap:6px}
+.trick .ex{background:#fff;border-radius:10px;padding:6px 10px;font-family:var(--disp);font-size:15px}
+.tsol{background:var(--lilacS);border-radius:14px;padding:10px 12px;font-size:14px}
+.tsol b{color:#5B3FB5}
+.trirow{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:14px;align-items:center}
+.tribox svg{display:block;width:100%;height:auto}
+@media (max-width:520px){.trirow{grid-template-columns:1fr}.tribox{max-width:220px;margin:0 auto}}
+.trow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+@media (min-width:760px){#skcCard{grid-column:span 2}}
+#hopStage{min-height:0!important;height:auto!important;padding:14px 8px!important}
+#hopSvg{width:100%;height:auto;display:block}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="fuzz" x="-12%" y="-12%" width="124%" height="124%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="4" result="n"></feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5.5" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+    </filter>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="parade" id="parade"></div>
+    <h1 class="sr">Times Table Dojo</h1>
+    <div class="hud sticker slim">
+      <div class="lv">
+        <div class="lvtop"><span id="lvName">Level 1 · Fluff Sprout</span><span class="num" id="xpTxt">0 XP</span></div>
+        <div class="xpbar" role="progressbar" aria-label="XP to next level"><i id="xpFill"></i></div>
+      </div>
+      <button class="btn sm white" id="muteBtn" aria-pressed="false" aria-label="Sound">🔊</button>
+      <button class="btn sm white" id="infoBtn" aria-expanded="false" aria-controls="hudMore" aria-label="Stats and badges">★</button>
+    </div>
+    <div class="hud sticker more" id="hudMore" hidden>
+      <p class="eyebrow">3rd grade · FCPS Quarters 1–4 · Units 3, 6, 9 &amp; 12 · Table Studio for 2s–12s</p>
+      <div class="pill"><b class="num" id="hudStreak">0</b><small>best streak</small></div>
+      <div class="pill"><b class="num" id="hudSolved">0</b><small>solved</small></div>
+      <div class="badges" id="badges"></div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Sections">
+    <ul role="tablist">
+      <li><button type="button" class="tabbtn" role="tab" data-tab="tables">Table Studio</button></li>
+      <li><button type="button" class="tabbtn" role="tab" data-tab="mult">Multiplication</button></li>
+      <li><button type="button" class="tabbtn" role="tab" data-tab="div">Division &amp; Families</button></li>
+      <li><button type="button" class="tabbtn" role="tab" data-tab="dojo">Belt Dojo</button></li>
+      <li><button type="button" class="tabbtn" role="tab" data-tab="mock">SOL Mock Test</button></li>
+    </ul>
+  </nav>
+
+  <!-- ============ TABLE STUDIO ============ -->
+  <section class="unit" id="tables">
+    <div class="unit-head">
+      <span class="unit-tag">TABLE STUDIO</span>
+      <h2>One Table at a Time</h2>
+    </div>
+    <div class="say"><span data-m="taki" data-s="64"></span><p class="bubble">Pick a number, then Hop it, Fill it, Learn it, Quiz it. Green tables are ones you know (2s, 3s, 4s, 5s, 10s). The <b>6s</b> are the ones you're learning now!</p></div>
+    <div class="tchips" id="tChips" role="tablist" aria-label="Choose a times table"></div>
+    <div id="tPage" style="display:grid;gap:14px"></div>
+  </section>
+
+  <!-- ============ MULTIPLICATION ============ -->
+  <section class="unit" id="mult">
+    <div class="unit-head">
+      <span class="unit-tag">MULTIPLY</span>
+      <h2>Multiplication Moves</h2>
+    </div>
+    <div class="say"><span data-m="momo" data-s="64"></span><p class="bubble">Momo here! Multiplication is just fast adding — the same number, over and over. Let's build it, group it, and flip it around.</p></div>
+
+    <div class="learn">
+      <div class="lcard">
+        <h3>Equal groups</h3>
+        <p style="font-size:14px">3 groups of 5 apples is <b class="num">3 × 5</b>. Repeated addition: <b class="num">5 + 5 + 5 = 15</b>.</p>
+        <div class="lvis" id="eqGroupsVis"></div>
+        <div class="ex num">3 × 5 = 15, the same as 5 + 5 + 5.</div>
+      </div>
+      <div class="lcard">
+        <h3>Arrays</h3>
+        <p style="font-size:14px">Rows and columns of objects. <b>Rows × columns = total.</b></p>
+        <div class="lvis" id="arrayFlipVis"></div>
+        <div class="ex num">4 rows of 6 = 4 × 6 = 24. Turn it sideways: 6 rows of 4 = 6 × 4 = 24, too!</div>
+      </div>
+      <div class="lcard">
+        <h3>Multiplication words</h3>
+        <ul><li><b>factor</b> × <b>factor</b> = <b>product</b></li><li>4 × 7 = 28 → 4 and 7 are factors, 28 is the product</li></ul>
+        <div class="fpDiagram" role="img" aria-label="4 times 7 equals 28: 4 and 7 are factors, 28 is the product">
+          <div class="fpCol"><span class="fpNum" style="background:var(--lemonS)">4</span><i class="fpLine" style="background:var(--tang)"></i><span class="fpLbl" style="color:var(--tang)">factor</span></div>
+          <span class="fpOp">×</span>
+          <div class="fpCol"><span class="fpNum" style="background:var(--pinkS)">7</span><i class="fpLine" style="background:var(--pink)"></i><span class="fpLbl" style="color:var(--bad)">factor</span></div>
+          <span class="fpOp">=</span>
+          <div class="fpCol"><span class="fpNum" style="background:var(--mintS)">28</span><i class="fpLine" style="background:var(--good)"></i><span class="fpLbl" style="color:var(--good)">product</span></div>
+        </div>
+      </div>
+      <div class="lcard" id="skcCard">
+        <h3>Skip counting</h3>
+        <p style="font-size:14px">Counting by the same number again and again lands you on that times table. Pick a number to try!</p>
+        <div class="skcrow" id="skcPicker" role="group" aria-label="Choose a number to skip count by"></div>
+        <div class="row" style="margin-top:6px"><button type="button" class="btn sm white" id="skcPracBtn" title="Practice: tap every multiple">✏️ Practice tap</button></div>
+        <div class="skprac" id="skcPracBox"><span id="skcPracMsg" class="num" style="font-weight:900" aria-live="polite"></span></div>
+        <div class="ex num" id="skcEx"></div>
+        <div class="numstrip" id="skcStrip" role="img" aria-label="Numbers 1 to 40 with multiples highlighted"></div>
+      </div>
+      <div class="lcard">
+        <h3>Three special rules</h3>
+        <ul>
+          <li><b>Flip-it rule:</b> a × b = b × a (order doesn't matter)</li>
+          <li><b>Times-1 rule:</b> any number × 1 = that same number</li>
+          <li><b>Zero rule:</b> any number × 0 = 0</li>
+        </ul>
+        <div class="ex num">9 × 1 = 9 &nbsp;·&nbsp; 9 × 0 = 0 &nbsp;·&nbsp; 6 × 8 = 8 × 6</div>
+      </div>
+      <div class="lcard">
+        <h3>Multiples build up</h3>
+        <p style="font-size:14px" id="skcBuildDesc"></p>
+        <div class="buildstrip" id="skcBuild"></div>
+      </div>
+      <div class="lcard">
+        <h3>Word problem clues</h3>
+        <p style="font-size:14px">Multiply when you see: <b>each</b>, <b>every</b>, <b>in all</b>, <b>altogether</b>, or "<b>groups of</b>".</p>
+        <div class="ex">6 tables, 4 chairs at each table. How many chairs in all? 6 × 4 = 24.</div>
+      </div>
+    </div>
+
+    <div class="lab sticker" id="arrayLab">
+      <div class="lab-head">
+        <div>
+          <p class="sub">Array Builder <span class="chip">Visual lab</span></p>
+          <p>Build rows and columns of squares from a top-down view. Watch the array grow and see the multiplication fact update live.</p>
+        </div>
+        <button class="btn sm pink" id="arrRand">Random array</button>
+      </div>
+      <div class="lab-grid">
+        <div class="stage" id="arrStage"><svg id="arrSvg" viewBox="0 0 300 300" role="img" aria-label="Top-down grid array of squares"></svg></div>
+        <div class="side">
+          <div class="readout" id="arrRead"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="row" style="justify-content:space-between">
+          <div class="row"><span style="font-weight:900">Rows</span><button class="rbtn" id="arrRowsMinus">−</button><span class="ct num" id="arrRowsCt">3</span><button class="rbtn" id="arrRowsPlus">+</button></div>
+          <div class="row"><span style="font-weight:900">Columns</span><button class="rbtn" id="arrColsMinus">−</button><span class="ct num" id="arrColsCt">4</span><button class="rbtn" id="arrColsPlus">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="sub" style="margin-bottom:10px">Practice Pod <span class="chip">Multiplication</span></p>
+      <div class="pod sticker" id="podMult"></div>
+    </div>
+  </section>
+
+  <!-- ============ DIVISION & FACT FAMILIES ============ -->
+  <section class="unit" id="div">
+    <div class="unit-head">
+      <span class="unit-tag">DIVIDE</span>
+      <h2>Division &amp; Fact Families</h2>
+    </div>
+    <div class="say"><span data-m="kumo" data-s="64"></span><p class="bubble">Kumo says: division is the un-doer of multiplication. Share it out evenly, or subtract the same amount again and again.</p></div>
+
+    <div class="learn">
+      <div class="lcard">
+        <h3>Equal sharing</h3>
+        <p style="font-size:14px">12 stickers shared equally among 3 friends. How many does each friend get?</p>
+        <div class="ex num">12 ÷ 3 = 4. Each friend gets 4 stickers.</div>
+        <div class="lvis" id="shareVis"></div>
+      </div>
+      <div class="lcard">
+        <h3>Equal grouping</h3>
+        <p style="font-size:14px">12 stickers, 4 in every group. How many groups can you make?</p>
+        <div class="ex num">12 ÷ 4 = 3 groups. Same numbers, different question!</div>
+        <div class="lvis" id="groupVis"></div>
+      </div>
+      <div class="lcard">
+        <h3>Repeated subtraction</h3>
+        <p style="font-size:14px">Start at 15. Subtract 5 again and again until you hit 0. Count the subtractions.</p>
+        <div class="ex num">15 − 5 = 10, 10 − 5 = 5, 5 − 5 = 0. That's 3 subtractions, so 15 ÷ 5 = 3.</div>
+        <div class="lvis" id="subVis"></div>
+      </div>
+      <div class="lcard">
+        <h3>Division words</h3>
+        <ul><li><b>dividend</b> ÷ <b>divisor</b> = <b>quotient</b></li><li>20 ÷ 4 = 5 → 20 is the dividend, 4 the divisor, 5 the quotient</li></ul>
+      </div>
+      <div class="lcard">
+        <h3>Fact families</h3>
+        <p style="font-size:14px">3, 6, and 18 make one family of 4 related facts:</p>
+        <div class="ex num">3 × 6 = 18 &nbsp;·&nbsp; 6 × 3 = 18 &nbsp;·&nbsp; 18 ÷ 3 = 6 &nbsp;·&nbsp; 18 ÷ 6 = 3</div>
+      </div>
+      <div class="lcard">
+        <h3>Zero and one in division</h3>
+        <ul><li>n ÷ 1 = n (7 ÷ 1 = 7)</li><li>n ÷ n = 1, if n isn't 0 (7 ÷ 7 = 1)</li><li>0 ÷ n = 0 (0 ÷ 7 = 0)</li><li>You can never divide by 0.</li></ul>
+      </div>
+    </div>
+
+    <div class="lab sticker" id="triLab">
+      <div class="lab-head">
+        <div>
+          <p class="sub">Fact Family Triangle <span class="chip">Interactive lab</span></p>
+          <p>Every triangle holds two factors and their product. Tap "New family" for numbers, then reveal all four related facts.</p>
+        </div>
+        <button class="btn sm pink" id="triNew">New family</button>
+      </div>
+      <div class="tri-wrap">
+        <div class="tri" id="triShape">
+          <svg viewBox="0 0 100 87" aria-hidden="true"><polygon points="50,4 6,82 94,82" fill="#EFE8FF" stroke="#3B2A4A" stroke-width="3"/></svg>
+          <span class="tnum t1" id="triTop">18</span>
+          <span class="tnum t2" id="triL">3</span>
+          <span class="tnum t3" id="triR">6</span>
+        </div>
+      </div>
+      <div class="row" style="justify-content:center"><button class="btn mint" id="triReveal">Show the family</button></div>
+      <ul class="famlist" id="triFacts" hidden></ul>
+    </div>
+
+    <div class="lab sticker" id="hopLab">
+      <div class="lab-head">
+        <div>
+          <p class="sub">Skip-Count Hopper <span class="chip">Visual lab</span></p>
+          <p>Pick a times table. Watch the critter hop along the number line by that many each time — forward to multiply, backward to divide.</p>
+        </div>
+        <div class="seg" id="hopDir"><button class="on" data-v="1">Hop forward ×</button><button data-v="-1">Hop back ÷</button></div>
+      </div>
+      <div class="stage" id="hopStage"><svg id="hopSvg" viewBox="0 0 600 140" role="img" aria-label="2D skip-counting number line"></svg></div>
+      <div class="row">
+        <label for="hopTable" style="font-weight:900">Skip count by</label>
+        <input class="inp num" id="hopTable" inputmode="numeric" autocomplete="off" value="4">
+        <button class="btn sm white" id="hopSet">Set</button>
+        <button class="btn pink" id="hopGo">Hop!</button>
+      </div>
+      <p class="say-box" id="hopSay" aria-live="polite"></p>
+    </div>
+
+    <div>
+      <p class="sub" style="margin-bottom:10px">Practice Pod <span class="chip">Division</span></p>
+      <div class="pod sticker" id="podDiv"></div>
+    </div>
+  </section>
+
+  <!-- ============ BELT DOJO ============ -->
+  <section class="unit" id="dojo">
+    <div class="unit-head">
+      <span class="unit-tag">DOJO</span>
+      <h2>Belt Dojo</h2>
+    </div>
+    <div class="say"><span data-m="taki" data-s="64"></span><p class="bubble">Taki's dojo: choose <b>Multiplication</b> or <b>Division</b>, pick a table, and train until you earn its belt. Get 10 facts right with no more than 2 misses to level up!</p></div>
+
+    <div class="pod sticker" style="padding:16px;display:grid;gap:14px">
+      <div style="display:flex;justify-content:center"><div class="seg" id="beltOp" role="group" aria-label="Belt type"><button type="button" data-v="mult" class="on">× Multiplication belts</button><button type="button" data-v="div">÷ Division belts</button></div></div>
+      <p class="beltnote" id="beltNote" style="margin:0;text-align:center;font-size:14px;color:var(--ink2)"></p>
+      <div class="beltrow" id="beltRow"></div>
+      <div class="panel" id="beltActive">
+        <h4>Pick a belt above to start training</h4>
+      </div>
+    </div>
+
+    <div class="pod sticker" style="padding:16px;display:grid;gap:14px">
+      <div class="row" style="justify-content:space-between">
+        <p class="sub" style="margin:0">Multiplication Table <span class="chip">1–12</span></p>
+        <button class="btn sm white" id="mtQuizToggle">Quiz me</button>
+      </div>
+      <p style="font-size:14px;color:var(--ink2);margin:0">Hover or tap a row/column to line it up. In quiz mode, tap a blank square to reveal the answer.</p>
+      <div class="mtable-scroll"><div id="multTable"></div></div>
+    </div>
+  </section>
+
+  <!-- ============ MOCK TEST ============ -->
+  <section class="unit" id="mock">
+    <div class="unit-head"><span class="unit-tag">SOL PREP</span><h2>SOL Mock Test</h2></div>
+    <div class="say"><span data-m="cocoa" data-s="64"></span><p class="bubble">Cocoa's challenge: 12 SOL-style multiplication &amp; division questions, one try each, just like test day. Score 10 or more to earn the Mock Master badge.</p></div>
+    <div class="pod sticker" id="mockBox"></div>
+  </section>
+
+  <!-- ============ PARENTS ============ -->
+  <section class="unit" id="parents"><details class="gu"><summary>For grown-ups</summary>
+    <div class="unit-head"><span class="unit-tag">GROWN-UPS</span><h2>Parent Corner</h2></div>
+    <div class="pc-grid">
+      <details class="pc" open>
+        <summary>How to use this page</summary>
+        <ul>
+          <li>Start each session in the Array Builder or Skip-Count Hopper for 3–5 minutes, then do one Practice Pod round.</li>
+          <li>Stay on <b>Grade level</b> until she gets about 5 in a row, then try <b>AAP challenge</b>.</li>
+          <li>The Belt Dojo is meant to be revisited daily — a couple of belts a week is plenty.</li>
+          <li>Every question has a "Show me how" explanation, so the answer key is built in.</li>
+          <li>A movement break pops up every so often. Progress saves in this browser only.</li>
+        </ul>
+      </details>
+      <details class="pc">
+        <summary>What she should be able to do (FCPS Units 3, 6, 9 &amp; 12)</summary>
+        <ul>
+          <li>Represent multiplication as equal groups, arrays, and repeated addition, and division as equal sharing, equal grouping, and repeated subtraction.</li>
+          <li>Recall multiplication and division facts through 12 × 12 fluently.</li>
+          <li>Understand and use fact families to relate a multiplication fact to its two matching division facts.</li>
+          <li>Apply the commutative property, the identity property (× 1), and the zero property (× 0) informally, without needing the formal names.</li>
+          <li>Solve one- and two-step word problems involving multiplication and division, including "how many in all," "how many each," and "how many groups" situations.</li>
+        </ul>
+      </details>
+      <details class="pc">
+        <summary>Watch for these common slips</summary>
+        <ul>
+          <li>Mixing up the dividend and divisor (writing 3 ÷ 12 instead of 12 ÷ 3).</li>
+          <li>Forgetting that a × b and b × a always give the same product.</li>
+          <li>Skip-counting errors — losing track partway through a longer times table.</li>
+          <li>Thinking any number divided by 0 is 0, instead of understanding it can't be done.</li>
+          <li>Confusing "3 groups of 5" with "5 groups of 3" when writing the matching equation for a word problem.</li>
+        </ul>
+      </details>
+    </div>
+  </details>
+  </section>
+
+  <footer>Built on the FCPS Grade 3 Math year-at-a-glance (Units 3, 6, 9 &amp; 12, combined as one spiraled multiplication &amp; division unit). <a href="https://www.fcps.edu/academics/elementary/third-grade/year-at-a-glance/math" target="_blank" rel="noopener">FCPS curriculum page</a></footer>
+</div>
+
+<div class="overlay" id="brk" hidden>
+  <div class="ov-card sticker" role="dialog" aria-modal="true" aria-labelledby="brkTitle">
+    <span id="brkM"></span>
+    <h3 id="brkTitle">Wiggle break!</h3>
+    <p class="move" id="brkMove"></p>
+    <div class="ov-timer num" id="brkTime">20</div>
+    <div class="row" style="justify-content:center"><button class="btn mint" id="brkDone">I did it! +5 XP</button><button class="btn sm white" id="brkSkip">Skip</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ---------- sound effects (synthesized, no audio files) ---------- */
+const SFX=(function(){
+  let ctx=null,muted=false;
+  try{const raw=localStorage.getItem('fluffsquad-mute');muted=raw==='1';}catch(e){}
+  function ac(){if(!ctx){try{ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){ctx=false;}}return ctx;}
+  function tone(freq,dur,type,gain,delay){
+    if(muted)return;const c=ac();if(!c)return;if(c.state==='suspended')c.resume();
+    const t0=c.currentTime+(delay||0);const o=c.createOscillator(),g=c.createGain();
+    o.type=type||'sine';o.frequency.setValueAtTime(freq,t0);
+    g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(gain||.18,t0+.012);g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
+    o.connect(g);g.connect(c.destination);o.start(t0);o.stop(t0+dur+.02);
+  }
+  return{
+    right(){tone(660,.11,'sine',.16,0);tone(880,.16,'sine',.16,.09);},
+    wrong(){tone(220,.16,'sawtooth',.09,0);tone(180,.2,'sawtooth',.09,.05);},
+    click(){tone(520,.06,'square',.08,0);},
+    level(){[523,659,784,1047].forEach((f,i)=>tone(f,.22,'triangle',.15,i*.09));},
+    badge(){[784,987,1175].forEach((f,i)=>tone(f,.18,'sine',.16,i*.07));},
+    roll(){tone(340,.3,'triangle',.08,0);},
+    toggleMute(){muted=!muted;try{localStorage.setItem('fluffsquad-mute',muted?'1':'0');}catch(e){}return muted;},
+    isMuted(){return muted;}
+  };
+})();
+const $=s=>document.querySelector(s);
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const fmt=n=>Number(n).toLocaleString('en-US');
+const norm=s=>String(s).replace(/[,\s]/g,'').toLowerCase();
+const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- mascots (original characters) ---------- */
+const MAS={
+  momo:{c:'#FF9EC4',ear:'bunny',name:'Momo'}, kumo:{c:'#8FD3FF',ear:'cloud',name:'Kumo'},
+  lemi:{c:'#FFE27A',ear:'antenna',name:'Lemi'}, taki:{c:'#FFB36B',ear:'cat',name:'Taki'},
+  mintu:{c:'#8EEBC2',ear:'sprout',name:'Mintu'}, cocoa:{c:'#D6A988',ear:'bear',name:'Cocoa'}
+};
+function mascot(k,size){
+  const m=MAS[k],c=m.c,ink='#3B2A4A';let ears='';
+  if(m.ear==='bunny')ears=`<ellipse cx="36" cy="24" rx="8" ry="20" fill="${c}" transform="rotate(-12 36 24)"/><ellipse cx="36" cy="26" rx="4" ry="13" fill="#FFD1E3" transform="rotate(-12 36 26)"/><ellipse cx="64" cy="24" rx="8" ry="20" fill="${c}" transform="rotate(12 64 24)"/><ellipse cx="64" cy="26" rx="4" ry="13" fill="#FFD1E3" transform="rotate(12 64 26)"/>`;
+  if(m.ear==='cat')ears=`<polygon points="24,44 30,14 48,32" fill="${c}"/><polygon points="31,36 32,22 41,31" fill="#FFD9B8"/><polygon points="76,44 70,14 52,32" fill="${c}"/><polygon points="69,36 68,22 59,31" fill="#FFD9B8"/>`;
+  if(m.ear==='bear')ears=`<circle cx="27" cy="32" r="11" fill="${c}"/><circle cx="27" cy="32" r="5.5" fill="#F3D2BC"/><circle cx="73" cy="32" r="11" fill="${c}"/><circle cx="73" cy="32" r="5.5" fill="#F3D2BC"/>`;
+  if(m.ear==='cloud')ears=`<circle cx="37" cy="27" r="11" fill="#DDF3FF"/><circle cx="51" cy="20" r="13" fill="#DDF3FF"/><circle cx="64" cy="27" r="10" fill="#DDF3FF"/>`;
+  if(m.ear==='antenna')ears=`<path d="M50 28 Q46 16 52 8" stroke="${ink}" stroke-width="2.5" fill="none" stroke-linecap="round"/><polygon points="52,1 54.4,6 60,6.4 55.7,9.8 57.2,15 52,12 46.8,15 48.3,9.8 44,6.4 49.6,6" fill="#FF8FB8" stroke="${ink}" stroke-width="1.2"/>`;
+  if(m.ear==='sprout')ears=`<path d="M50 28 V14" stroke="#2FA56E" stroke-width="3" stroke-linecap="round"/><ellipse cx="42" cy="12" rx="9" ry="5" fill="#4FCB8E" transform="rotate(-25 42 12)"/><ellipse cx="58" cy="12" rx="9" ry="5" fill="#4FCB8E" transform="rotate(25 58 12)"/>`;
+  return `<svg class="mascot" viewBox="0 0 100 106" width="${size}" height="${size}" aria-hidden="true">${ears}<ellipse cx="38" cy="96" rx="9" ry="6" fill="${c}" stroke="${ink}" stroke-width="1.5"/><ellipse cx="62" cy="96" rx="9" ry="6" fill="${c}" stroke="${ink}" stroke-width="1.5"/><circle cx="50" cy="62" r="35" fill="${c}" filter="url(#fuzz)"/><ellipse cx="50" cy="68" rx="23" ry="19" fill="#fff" opacity=".45"/><ellipse cx="39" cy="61" rx="5.8" ry="7.4" fill="${ink}"/><ellipse cx="61" cy="61" rx="5.8" ry="7.4" fill="${ink}"/><circle cx="41" cy="58" r="2.2" fill="#fff"/><circle cx="63" cy="58" r="2.2" fill="#fff"/><circle cx="37.5" cy="64" r="1" fill="#fff"/><circle cx="59.5" cy="64" r="1" fill="#fff"/><ellipse cx="30" cy="71" rx="5.5" ry="3.2" fill="#FF6F9F" opacity=".5"/><ellipse cx="70" cy="71" rx="5.5" ry="3.2" fill="#FF6F9F" opacity=".5"/><path d="M45 71 q2.5 3.2 5 0 q2.5 3.2 5 0" stroke="${ink}" stroke-width="1.9" fill="none" stroke-linecap="round"/></svg>`;
+}
+$('#parade').innerHTML=['momo','kumo','lemi','taki','mintu','cocoa'].map(k=>mascot(k,76)).join('');
+document.querySelectorAll('[data-m]').forEach(el=>{el.outerHTML=mascot(el.dataset.m,+el.dataset.s||56);});
+
+function setMuteBtn(){const b=$('#muteBtn');if(!b)return;const m=SFX.isMuted();b.textContent=m?'🔇':'🔊';b.setAttribute('aria-pressed',String(m));}
+setMuteBtn();
+$('#muteBtn').onclick=()=>{SFX.toggleMute();setMuteBtn();if(!SFX.isMuted())SFX.click();};
+
+/* ---------- tabs: one section visible at a time ---------- */
+const TABS=['tables','mult','div','dojo','mock'];
+function showTab(id){
+  if(!TABS.includes(id))id='tables';
+  TABS.forEach(t=>{const el=document.getElementById(t);if(el)el.hidden=(t!==id);});
+  document.querySelectorAll('.nav button.tabbtn').forEach(b=>{const on=b.dataset.tab===id;b.classList.toggle('active',on);b.setAttribute('aria-selected',String(on));});
+  try{history.replaceState(null,'',location.pathname+location.search+'#t-'+id);}catch(e){}
+  if(!window.__tabReady){window.scrollTo(0,0);}else{const n=document.querySelector('.nav'),y=n.getBoundingClientRect().top+window.scrollY;if(window.scrollY>y)window.scrollTo({top:y,behavior:'auto'});}
+}
+document.querySelectorAll('.nav button.tabbtn').forEach(b=>{b.addEventListener('click',()=>{SFX.click();showTab(b.dataset.tab);});});
+showTab((location.hash||'').replace(/^#(t-)?/,''));window.__tabReady=true;
+$('#infoBtn').onclick=()=>{const m=$('#hudMore'),o=m.hidden;m.hidden=!o;$('#infoBtn').setAttribute('aria-expanded',String(o));SFX.click();};
+
+/* GSAP: playful bob for the mascot parade instead of the CSS keyframe */
+if(window.gsap&&!REDUCED){
+  document.querySelectorAll('#parade .mascot').forEach((el,i)=>{
+    el.style.animation='none';
+    gsap.to(el,{y:-9,duration:1.3+i*.08,ease:'sine.inOut',repeat:-1,yoyo:true,delay:i*.15});
+  });
+}
+function confettiBurst(scale){
+  if(!window.confetti||REDUCED)return;
+  confetti({particleCount:40*(scale||1),spread:70,startVelocity:32,scalar:.9,colors:['#FF8FB8','#8FD3FF','#FFE27A','#8EEBC2','#B79CFF'],origin:{y:.6}});
+}
+/* confetti that bursts from a specific element on screen, e.g. a mascot */
+function burstFrom(el,scale){
+  if(!window.confetti||REDUCED||!el)return confettiBurst(scale);
+  const r=el.getBoundingClientRect();
+  if(!r.width&&!r.height)return confettiBurst(scale);
+  const x=(r.left+r.width/2)/window.innerWidth,y=(r.top+r.height/2)/window.innerHeight;
+  confetti({particleCount:26*(scale||1),spread:65,startVelocity:24,scalar:.75,gravity:.9,colors:['#FF8FB8','#8FD3FF','#FFE27A','#8EEBC2','#B79CFF'],origin:{x,y}});
+}
+/* a mascot jump + spin, e.g. on a correct answer or a playful tap */
+function popMascot(el,big){
+  if(!el)return;
+  if(!window.gsap||REDUCED){el.style.transform='';return;}
+  gsap.killTweensOf(el);
+  gsap.fromTo(el,{scale:1,rotate:0,y:0},{scale:big?1.35:1.22,rotate:big?14:9,y:-6,duration:.22,ease:'back.out(2.6)',
+    onComplete(){gsap.to(el,{scale:1,rotate:0,y:0,duration:.35,ease:'elastic.out(1,.5)'});}});
+}
+function wobbleMascot(el){
+  if(!el||!window.gsap||REDUCED)return;
+  gsap.killTweensOf(el);
+  gsap.fromTo(el,{rotate:0},{rotate:-8,duration:.09,yoyo:true,repeat:3,ease:'sine.inOut',onComplete(){gsap.set(el,{rotate:0});}});
+}
+/* tap any mascot on the page for a little celebration, just for fun */
+document.addEventListener('click',e=>{
+  const m=e.target.closest('.mascot');
+  if(!m)return;
+  popMascot(m);burstFrom(m,.5);SFX.click();
+});
+
+/* ---------- progress ---------- */
+const KEY='fluffsquad-g3-timestable-v1';
+let S={xp:0,best:0,solved:0,mult:0,div:0,aap:0,mock:null,badges:[],belts:{},weak:{}};
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));}catch(e){}
+if(!S.belts)S.belts={};
+if(!S.dbelts)S.dbelts={};
+if(!S.weak)S.weak={};
+/* old saved progress may still carry an S.mm field from the retired Mental Math Gym — it's simply
+   ignored now, never read or written, so it can't crash anything below. */
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}};
+function recordMiss(a,b){const k=Math.min(a,b)+'x'+Math.max(a,b);S.weak[k]=(S.weak[k]||0)+1;if(Object.keys(S.weak).length>40){const sorted=Object.entries(S.weak).sort((x,y)=>y[1]-x[1]);S.weak=Object.fromEntries(sorted.slice(0,30));}save();}
+function recordHit(a,b){const k=Math.min(a,b)+'x'+Math.max(a,b);if(S.weak[k]){S.weak[k]--;if(S.weak[k]<=0)delete S.weak[k];save();}}
+function pickWeak(){const keys=Object.keys(S.weak);if(!keys.length)return null;const k=pick(keys);const [a,b]=k.split('x').map(Number);return {a,b,misses:S.weak[k]};}
+const BADGES=[
+  ['mult','Array Ace','10 Multiplication answers'],['div','Division Detective','10 Division answers'],
+  ['aap','AAP Brain','5 AAP answers'],['streak','Hot Streak','7 in a row'],
+  ['dojo','Black Belt','Earn all 12 belts'],['mock','Mock Test Master','10+ on the SOL Mock Test']
+];
+const LEVELS=['Fluff Sprout','Puff Cadet','Cloud Hopper','Number Ninja','Graph Star','Math Marshmallow','Legend of Fluff'];
+let streak=0;
+function hud(animate){
+  const lv=Math.floor(S.xp/100);
+  $('#lvName').textContent=`Level ${lv+1} · ${LEVELS[Math.min(lv,LEVELS.length-1)]}`;
+  $('#xpTxt').textContent=`${S.xp} XP`;
+  const pct=(S.xp%100)+'%';
+  if(animate&&window.gsap&&!REDUCED)gsap.to('#xpFill',{width:pct,duration:.6,ease:'power2.out'});
+  else $('#xpFill').style.width=pct;
+  $('#hudStreak').textContent=S.best;$('#hudSolved').textContent=S.solved;
+  $('#badges').innerHTML=BADGES.map(b=>`<span class="badge ${S.badges.includes(b[0])?'on':''}" title="${b[2]}"><span class="bd">★</span>${b[1]}</span>`).join('');
+}
+let toastT;
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
+function badge(id){if(S.badges.includes(id))return;S.badges.push(id);const b=BADGES.find(x=>x[0]===id);toast(`Badge unlocked: ${b[1]}!`);SFX.badge();confettiBurst(.7);
+  const pill=document.querySelector('.badge.on:last-child');
+  if(pill&&window.gsap&&!REDUCED)gsap.fromTo(pill,{scale:0},{scale:1,duration:.5,ease:'back.out(2.2)'});
+}
+function award(xp,unit,aap){
+  const oldLv=Math.floor(S.xp/100);
+  S.xp+=xp;
+  if(unit){S.solved++;S[unit]=(S[unit]||0)+1;if(aap)S.aap++;streak++;S.best=Math.max(S.best,streak);}
+  if(S.mult>=10)badge('mult');if(S.div>=10)badge('div');if(S.aap>=5)badge('aap');if(streak>=7)badge('streak');
+  if(Math.floor(S.xp/100)>oldLv){toast(`Level up! Level ${Math.floor(S.xp/100)+1}`);SFX.level();confettiBurst(1.4);}
+  save();hud(true);
+}
+hud();
+
+/* ---------- Skip-counting visual (learn cards: number strip + build-up), one shared number picker ---------- */
+(function(){
+  const picker=$('#skcPicker');
+  for(let i=2;i<=12;i++){
+    const b=document.createElement('button');
+    b.type='button';b.className='skcbtn';b.textContent=String(i);b.dataset.n=String(i);
+    b.setAttribute('aria-pressed','false');
+    b.addEventListener('click',()=>{SFX.click();const was=prac;renderSkipVisuals(i,!was);if(was)startPractice();});
+    picker.appendChild(b);
+  }
+  let curN=4,big=false,prac=false,pk=0;
+  const strip=$('#skcStrip'),pmsg=$('#skcPracMsg'),pbox=$('#skcPracBox'),pbtn=$('#skcPracBtn');
+  function renderSkipVisuals(n,animate){
+    curN=n;prac=false;pk=0;pmsg.textContent='';pbox.classList.remove('show');pbtn.classList.remove('on');pbtn.textContent='✏️ Practice tap';pbtn.title='Practice: tap every multiple';pbtn.setAttribute('aria-label','Practice: tap every multiple');
+    picker.querySelectorAll('.skcbtn').forEach(b=>{const on=+b.dataset.n===n;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});
+    const seq=[1,2,3,4,5];
+    $('#skcEx').textContent=`Skip count by ${n}: ${seq.map(i=>n*i).join(', ')} … that's ${seq.map(i=>`${n} × ${i}`).join(', ')}.`;
+    const len=big?100:40;
+    strip.classList.remove('tap');
+    strip.setAttribute('aria-label',`Numbers 1 to ${len} with multiples of ${n} highlighted`);
+    strip.innerHTML=Array.from({length:len},(_,i)=>i+1).map(v=>`<span class="${v%n===0?'hl':''}">${v}</span>`).join('');
+    $('#skcBuildDesc').textContent=`Every multiple of ${n} adds one more group of ${n} dots.`;
+    const build=$('#skcBuild');
+    build.innerHTML=[1,2,3,4].map(i=>`<div class="bgroup">${'<i></i>'.repeat(n*i)}<b class="num">${n*i}</b></div>`).join('');
+    if(animate&&window.gsap&&!REDUCED){
+      gsap.fromTo(strip.querySelectorAll('span.hl'),{scale:0},{scale:1,duration:.32,stagger:.018,ease:'back.out(2.4)'});
+      gsap.fromTo(build.querySelectorAll('.bgroup'),{scale:.85,opacity:.35},{scale:1,opacity:1,duration:.28,stagger:.05,ease:'back.out(2)'});
+    }
+  }
+  function startPractice(){
+    const n=curN,len=big?100:40;prac=true;pk=0;
+    strip.classList.add('tap');
+    strip.innerHTML=Array.from({length:len},(_,i)=>`<span data-v="${i+1}">${i+1}</span>`).join('');
+    strip.setAttribute('aria-label',`Practice: tap the multiples of ${n} in order`);
+    pbtn.textContent='👁 Show';pbtn.classList.add('on');pbtn.title='Show the multiples';pbtn.setAttribute('aria-label','Show the multiples');pbox.classList.add('show');
+    pmsg.textContent=`Tap ${n}, then ${n*2}, then ${n*3} …`;
+  }
+  pbtn.addEventListener('click',e=>{e.stopPropagation();SFX.click();if(prac)renderSkipVisuals(curN,false);else startPractice();});
+  strip.addEventListener('click',e=>{
+    const sp=e.target.closest('span[data-v]');if(!prac||!sp||sp.classList.contains('hl'))return;
+    const v=+sp.dataset.v,len=big?100:40,want=curN*(pk+1);
+    if(v===want){
+      sp.classList.add('hl');pk++;SFX.click();
+      const nxt=curN*(pk+1);
+      if(nxt>len){prac=false;pmsg.textContent=`You counted by ${curN} all the way to ${want}!`;SFX.right();confettiBurst(.6);award(10,null,false);pbtn.textContent='✏️ Practice tap';pbtn.classList.remove('on');}
+      else pmsg.textContent=`${want} ✓ Next: ${nxt}`;
+    }else{
+      SFX.wrong();sp.classList.add('no');setTimeout(()=>sp.classList.remove('no'),350);
+      pmsg.textContent=`Not ${v}. Add ${curN} to ${want} to get ${curN*(pk+1)}.`;
+    }
+  });
+  renderSkipVisuals(4,false);
+})();
+
+
+
+/* ---------- movement break ---------- */
+const MOVES=[['momo','Do 10 bunny hops like Momo.'],['kumo','Float like Kumo: arms up, sway side to side 10 times.'],['lemi','Lemi star jumps! 8 jumping jacks.'],['taki','Taki cat stretch: reach up high and hold for 10 seconds.'],['mintu','Grow like Mintu: crouch small, then stretch tall. 5 times.'],['cocoa','Cocoa bear walk: hands and feet across the room and back.']];
+let brkTimer;
+function brainBreak(){
+  const [k,txt]=pick(MOVES);$('#brkM').innerHTML=mascot(k,90);$('#brkMove').textContent=txt;
+  let t=20;$('#brkTime').textContent=t;$('#brk').hidden=false;$('#brkDone').focus();
+  clearInterval(brkTimer);brkTimer=setInterval(()=>{t=Math.max(0,t-1);$('#brkTime').textContent=t;if(!t)clearInterval(brkTimer);},1000);
+}
+function closeBreak(){clearInterval(brkTimer);$('#brk').hidden=true;}
+$('#brkDone').onclick=()=>{SFX.right();award(5);closeBreak();toast('+5 XP for moving!');};
+$('#brkSkip').onclick=closeBreak;
+
+/* ---------- shared helpers ---------- */
+function mc(correct,cands,fb){const out=[String(correct)];for(const c of cands){const s=String(c);if(s&&s!=='NaN'&&!out.includes(s))out.push(s);if(out.length===4)break;}let g=0;while(out.length<4&&fb&&g++<60){const s=String(fb());if(!out.includes(s))out.push(s);}return shuffle(out);}
+
+/* ---------- visuals for multiplication / division questions ---------- */
+const PAL=['#FF9EC4','#8FD3FF','#FFD24D','#8EEBC2','#FFB36B','#B79CFF'];
+/* array of a rows by b columns, drawn as an SVG grid of little squares */
+function arraySVG(a,b,hideIdx){
+  const cell=Math.min(34,Math.floor(300/Math.max(a,b))),gap=4;
+  const W=b*(cell+gap)+gap,H=a*(cell+gap)+gap+26;
+  let g='';
+  for(let r=0;r<a;r++)for(let c=0;c<b;c++){
+    const x=gap+c*(cell+gap),y=26+gap+r*(cell+gap);
+    const idx=r*b+c;
+    if(hideIdx!=null&&idx>=hideIdx)continue;
+    g+=`<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="4" fill="${PAL[r%PAL.length]}" stroke="#3B2A4A" stroke-width="1.5"/>`;
+  }
+  return `<svg viewBox="0 0 ${W} ${H+gap}" role="img" aria-label="${a} by ${b} array" style="font-family:'Zen Maru Gothic',system-ui,sans-serif"><text x="${W/2}" y="16" text-anchor="middle" font-size="13" font-weight="900" fill="#3B2A4A">${a} rows of ${b}</text>${g}</svg>`;
+}
+/* a groups, each with b dots inside a rounded rectangle */
+function groupsSVG(a,b){
+  const perRow=Math.min(a,6);const rows=Math.ceil(a/perRow);
+  const gw=Math.max(52,b*16+16),gh=Math.ceil(b/4)*16+30;
+  const W=perRow*(gw+10)+10,H=rows*(gh+10)+36;
+  let g='';
+  for(let i=0;i<a;i++){
+    const col=i%perRow,row=Math.floor(i/perRow);
+    const gx=10+col*(gw+10),gy=30+row*(gh+10);
+    g+=`<rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" rx="10" fill="#FFF6D1" stroke="#3B2A4A" stroke-width="1.5"/>`;
+    for(let d=0;d<b;d++){const dc=d%4,dr=Math.floor(d/4);g+=`<circle cx="${gx+16+dc*16}" cy="${gy+16+dr*16}" r="6" fill="${PAL[i%PAL.length]}" stroke="#3B2A4A" stroke-width="1.3"/>`;}
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${a} groups of ${b}" style="font-family:'Zen Maru Gothic',system-ui,sans-serif"><text x="${W/2}" y="18" text-anchor="middle" font-size="13" font-weight="900" fill="#3B2A4A">${a} groups of ${b}</text>${g}</svg>`;
+}
+/* a groups of b little apples (circle + tiny leaf), for the "equal groups" learn card */
+function appleGroupsSVG(a,b){
+  const perRow=Math.min(a,6);const rows=Math.ceil(a/perRow);
+  const gw=Math.max(52,b*16+16),gh=Math.ceil(b/4)*16+30;
+  const W=perRow*(gw+10)+10,H=rows*(gh+10)+36;
+  const appleC=['#FF6F6F','#FF9EC4','#8EEBC2'];
+  let g='';
+  for(let i=0;i<a;i++){
+    const col=i%perRow,row=Math.floor(i/perRow);
+    const gx=10+col*(gw+10),gy=30+row*(gh+10);
+    g+=`<rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" rx="10" fill="#FFF6D1" stroke="#3B2A4A" stroke-width="1.5"/>`;
+    for(let d=0;d<b;d++){
+      const dc=d%4,dr=Math.floor(d/4);
+      const cx=gx+16+dc*16,cy=gy+17+dr*16;
+      g+=`<ellipse cx="${cx-2.2}" cy="${cy-6.4}" rx="3" ry="1.6" fill="#3FA35E" transform="rotate(-30 ${cx-2.2} ${cy-6.4})"/><circle cx="${cx}" cy="${cy}" r="6" fill="${appleC[i%appleC.length]}" stroke="#3B2A4A" stroke-width="1.2"/>`;
+    }
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${a} groups of ${b} apples" style="font-family:'Zen Maru Gothic',system-ui,sans-serif"><text x="${W/2}" y="18" text-anchor="middle" font-size="13" font-weight="900" fill="#3B2A4A">${a} groups of ${b} apples</text>${g}</svg>`;
+}
+/* two small arrays side by side — a×b next to b×a — to show the array "turned sideways" */
+function arrayFlipSVG(a,b){
+  const cell=14,gap=3;
+  const gridW=cols=>cols*(cell+gap)+gap;
+  function grid(rows,cols,ox,oy){
+    let g='';
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+      const x=ox+gap+c*(cell+gap),y=oy+gap+r*(cell+gap);
+      g+=`<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="3" fill="${PAL[r%PAL.length]}" stroke="#3B2A4A" stroke-width="1.2"/>`;
+    }
+    return g;
+  }
+  const w1=gridW(b),w2=gridW(a);
+  const h1=a*(cell+gap)+gap,h2=b*(cell+gap)+gap;
+  const top=22,H=Math.max(h1,h2)+top+10;
+  const gapX=36;
+  const W=w1+gapX+w2+16;
+  const ox2=8+w1+gapX;
+  const midY=top+Math.max(h1,h2)/2;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${a} rows of ${b} turned sideways to make ${b} rows of ${a}" style="font-family:'Zen Maru Gothic',system-ui,sans-serif">
+    <text x="${8+w1/2}" y="14" text-anchor="middle" font-size="12" font-weight="900" fill="#3B2A4A">${a} × ${b}</text>
+    ${grid(a,b,8,top)}
+    <text x="${8+w1+gapX/2}" y="${midY+6}" text-anchor="middle" font-size="20" fill="#8B6FE0">⟳</text>
+    <text x="${ox2+w2/2}" y="14" text-anchor="middle" font-size="12" font-weight="900" fill="#3B2A4A">${b} × ${a}</text>
+    ${grid(b,a,ox2,top)}
+  </svg>`;
+}
+/* ---------- static learn-card visuals: equal groups (apples) + arrays turned sideways ---------- */
+(function(){
+  const eq=$('#eqGroupsVis');if(eq)eq.innerHTML=appleGroupsSVG(3,5);
+  const af=$('#arrayFlipVis');if(af)af.innerHTML=arrayFlipSVG(4,6);
+})();
+/* total items dealt out one at a time into `groups` equal piles — the "equal sharing" side of division */
+function shareSVG(total,groups){
+  const each=total/groups;
+  const perRow=Math.min(each,4)||1;
+  const rows=Math.ceil(each/perRow)||1;
+  const plateW=Math.max(56,perRow*16+20),plateH=rows*16+34;
+  const W=groups*(plateW+14)+14,H=plateH+58;
+  let g='';
+  for(let p=0;p<groups;p++){
+    const px=14+p*(plateW+14),py=40;
+    g+=`<ellipse cx="${px+plateW/2}" cy="${py+plateH/2}" rx="${plateW/2}" ry="${plateH/2}" fill="#FFF6D1" stroke="#3B2A4A" stroke-width="1.5"/>`;
+    for(let d=0;d<each;d++){
+      const dc=d%perRow,dr=Math.floor(d/perRow);
+      const cx=px+plateW/2-(perRow-1)*8+dc*16,cy=py+plateH/2-(rows-1)*8+dr*16;
+      const order=d*groups+p+1;
+      g+=`<circle cx="${cx}" cy="${cy}" r="6.5" fill="${PAL[p%PAL.length]}" stroke="#3B2A4A" stroke-width="1.2"/><text x="${cx}" y="${cy+2.6}" text-anchor="middle" font-size="7" font-weight="900" fill="#fff">${order}</text>`;
+    }
+    g+=`<text x="${px+plateW/2}" y="${py+plateH+18}" text-anchor="middle" font-size="12" font-weight="900" fill="#3B2A4A">${each} each</text>`;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${total} items dealt one by one evenly into ${groups} piles of ${each}" style="font-family:'Zen Maru Gothic',system-ui,sans-serif"><text x="${W/2}" y="16" text-anchor="middle" font-size="13" font-weight="900" fill="#3B2A4A">${total} dealt into ${groups} piles, one at a time</text>${g}</svg>`;
+}
+/* count-down ladder: start reduced by equal jumps of `step` down to 0 — the "repeated subtraction" side of division */
+function subLadderSVG(start,step){
+  const jumps=start/step,segW=44,pad=28;
+  const W=jumps*segW+pad*2,H=92,lineY=62;
+  const xOf=v=>pad+(v/step)*segW;
+  let ticks='',arcs='';
+  for(let v=0;v<=start;v+=step){
+    const x=xOf(v),big=(v===0||v===start);
+    ticks+=`<line x1="${x}" x2="${x}" y1="${lineY-8}" y2="${lineY+8}" stroke="#3B2A4A" stroke-width="${big?3:2}"/><text x="${x}" y="${lineY+24}" text-anchor="middle" font-size="${big?14:12}" font-weight="900" fill="${big?'#5B3FB5':'#6E5A7E'}">${v}</text>`;
+  }
+  for(let j=jumps;j>=1;j--){
+    const x1=xOf(j*step),x2=xOf((j-1)*step);
+    const midX=(x1+x2)/2,peakY=lineY-26;
+    arcs+=`<path d="M${x1} ${lineY-8} Q${midX} ${peakY} ${x2} ${lineY-8}" fill="none" stroke="#FF8FB8" stroke-width="2.5" marker-end="url(#subArrow)"/><text x="${midX}" y="${peakY-4}" text-anchor="middle" font-size="11" font-weight="900" fill="#D63A72">−${step}</text>`;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Counting down from ${start} by ${step} to 0 in ${jumps} jumps"><defs><marker id="subArrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#FF8FB8"/></marker></defs><text x="${W/2}" y="14" text-anchor="middle" font-size="13" font-weight="900" fill="#3B2A4A" style="font-family:'Zen Maru Gothic',system-ui,sans-serif">${jumps} jumps of ${step} from ${start} to 0</text><line x1="${xOf(0)}" x2="${xOf(start)}" y1="${lineY}" y2="${lineY}" stroke="#3B2A4A" stroke-width="3" stroke-linecap="round"/>${ticks}${arcs}</svg>`;
+}
+
+/* ---------- question generators: multiplication ---------- */
+const U1={grade:[
+  ()=>{const a=R(2,10),b=R(2,10);
+    return {visual:groupsSVG(a,b),prompt:`There are <b>${a}</b> groups with <b>${b}</b> in each group. How many in all?`,input:true,answer:a*b,explain:`${a} groups of ${b}: ${Array(a).fill(b).join(' + ')} = <b>${a*b}</b>. That's ${a} × ${b} = ${a*b}.`};},
+  ()=>{const a=R(2,10),b=R(2,10);
+    return {visual:arraySVG(a,b),prompt:`Build an array: <b>${a}</b> rows of <b>${b}</b>. How many squares in all?`,choices:mc(a*b,[a+b,a*b+b,a*b-a,(a+1)*b],()=>R(2,100)),answer:a*b,explain:`${a} rows × ${b} columns = <b>${a*b}</b> squares.`};},
+  ()=>{const b=R(2,9),a=R(2,9);
+    return {prompt:`${Array(a).fill(b).join(' + ')} is the same as which multiplication fact?`,choices:mc(`${a} × ${b}`,[`${b} × ${a+1}`,`${a+1} × ${b}`,`${a} × ${b+1}`],()=>`${R(2,9)} × ${R(2,9)}`),answer:`${a} × ${b}`,explain:`${b} added ${a} times is the same as <b>${a} × ${b}</b> = ${a*b}.`};},
+  ()=>{const a=R(2,12),b=R(2,12);
+    return {prompt:`What is <span class="big num">${a} × ${b}</span>?`,choices:mc(a*b,[a*b+a,a*b-b,a*(b+1),(a+1)*b],()=>R(4,144)),answer:a*b,explain:`${a} × ${b} = <b>${a*b}</b>.`};},
+  ()=>{const a=R(2,9),b=R(2,9);const known=a*b;
+    return {prompt:`You know that ${a} × ${b} = ${known}. What is <span class="big num">${b} × ${a}</span>?`,choices:mc(known,[known+a,known-b,known+1],()=>R(4,81)),answer:known,explain:`Flip-it rule: a × b = b × a, so ${b} × ${a} = <b>${known}</b> too.`};},
+  ()=>{const n=R(2,12);const v=Math.random()<.5;
+    if(v)return {prompt:`What is <span class="big num">${n} × 1</span>?`,input:true,answer:n,explain:`Any number × 1 stays the same: <b>${n}</b>.`};
+    return {prompt:`What is <span class="big num">${n} × 0</span>?`,input:true,answer:0,explain:`Any number × 0 is <b>0</b>.`};},
+  ()=>{const b=R(2,9);const terms=Array.from({length:5},(_,i)=>b*(i+1));const miss=R(1,3);
+    return {prompt:`Skip count by ${b}s. What comes next?<br><span class="big num">${terms.map((t,i)=>i===miss?t:t).slice(0,miss).join(', ')}, ___</span>`,input:true,answer:terms[miss],explain:`Counting by ${b}s: ${terms.slice(0,miss+1).join(', ')}. The next number is <b>${terms[miss]}</b>.`};},
+  ()=>{const a=R(2,9),b=R(2,9);const total=a*b;const want=Math.random()<.5?'a':'b';
+    if(want==='a')return {prompt:`Missing factor: <span class="big num">? × ${b} = ${total}</span>`,input:true,answer:a,explain:`${total} ÷ ${b} = <b>${a}</b>, because ${a} × ${b} = ${total}.`};
+    return {prompt:`Missing factor: <span class="big num">${a} × ? = ${total}</span>`,input:true,answer:b,explain:`${total} ÷ ${a} = <b>${b}</b>, because ${a} × ${b} = ${total}.`};},
+  ()=>{const each=R(2,9),groups=R(2,9);const ans=each*groups;const nouns=pick([['table','chair'],['box','crayon'],['shelf','book'],['jar','marble'],['team','player']]);
+    return {prompt:`There are <b>${groups}</b> ${nouns[0]}s. Each ${nouns[0]} has <b>${each}</b> ${nouns[1]}s. How many ${nouns[1]}s in all?`,input:true,answer:ans,explain:`${groups} groups of ${each}: ${groups} × ${each} = <b>${ans}</b>.`};}
+],aap:[
+  ()=>{const a=R(3,12),b=R(3,12),c=R(2,9);const ans=a*b+c;
+    return {prompt:`A baker makes <b>${a}</b> trays with <b>${b}</b> muffins on each tray, then bakes <b>${c}</b> extra muffins. How many muffins in all?`,input:true,answer:ans,explain:`Step 1: ${a} × ${b} = ${a*b}. Step 2: ${a*b} + ${c} = <b>${ans}</b>.`};},
+  ()=>{const a=R(3,9),b=R(3,9),c=R(2,a*b-1);const ans=a*b-c;
+    return {prompt:`There are <b>${a}</b> bags with <b>${b}</b> apples in each bag. <b>${c}</b> apples get eaten. How many apples are left?`,input:true,answer:ans,explain:`Step 1: ${a} × ${b} = ${a*b}. Step 2: ${a*b} − ${c} = <b>${ans}</b>.`};},
+  ()=>{const base=R(2,9),times=R(2,5);const ans=base*times;
+    return {prompt:`Kumo has <b>${base}</b> stickers. Momo has <b>${times}</b> times as many. How many stickers does Momo have?`,input:true,answer:ans,explain:`"${times} times as many" means multiply: ${base} × ${times} = <b>${ans}</b>.`};},
+  ()=>{const a=R(9,12),b=R(9,12);
+    return {prompt:`What is <span class="big num">${a} × ${b}</span>?`,input:true,answer:a*b,explain:`${a} × ${b} = <b>${a*b}</b>. Try breaking it apart: ${a} × ${b} = ${a}×10 + ${a}×${b-10<0?b:b-10}${b<10?'':''} — or just build it from a fact you know.`};},
+  ()=>{const a=R(2,9),b=R(2,9),lhs=a*b;const c=R(2,9),d=R(2,9);let rhs=c*d;while(rhs===lhs){d=R(2,9);rhs=c*d;}
+    const bigger=lhs>rhs;
+    return {prompt:`Which is greater?<br><span class="big num">${a} × ${b} &nbsp;◯&nbsp; ${c} × ${d}</span>`,choices:['Left side','Right side','They are equal'],fixed:true,answer:bigger?'Left side':'Right side',explain:`${a} × ${b} = ${lhs}. ${c} × ${d} = ${rhs}. ${lhs} ${lhs>rhs?'>':'<'} ${rhs}, so the <b>${bigger?'left':'right'} side</b> is greater.`};},
+  ()=>{const p=pick([[7,8],[8,7],[9,7],[7,9],[6,8],[8,6],[9,8],[8,9],[6,9],[9,6],[7,7],[8,8],[9,9]]);const [a,b]=p;const known=a*(b-1);
+    return {prompt:`If ${a} × ${b-1} = ${known}, what is <span class="big num">${a} × ${b}</span>?`,input:true,answer:a*b,explain:`One more group of ${a}: ${known} + ${a} = <b>${a*b}</b>.`};}
+]};
+
+/* ---------- question generators: division ---------- */
+const U2={grade:[
+  ()=>{const b=R(2,10),q=R(2,10);const total=b*q;
+    return {visual:groupsSVG(q,b),prompt:`<b>${total}</b> items are shared equally among <b>${q}</b> friends. How many does each friend get?`,input:true,answer:b,explain:`${total} ÷ ${q} = <b>${b}</b>. Check: ${q} × ${b} = ${total}.`};},
+  ()=>{const b=R(2,10),q=R(2,10);const total=b*q;
+    return {prompt:`<b>${total}</b> items are put into groups of <b>${b}</b>. How many groups can you make?`,input:true,answer:q,explain:`${total} ÷ ${b} = <b>${q}</b> groups, because ${q} × ${b} = ${total}.`};},
+  ()=>{const b=R(2,9),q=R(2,9);const total=b*q;
+    return {prompt:`Start at <b>${total}</b>. Subtract ${b} again and again until you reach 0. How many times did you subtract?`,input:true,answer:q,explain:`${total} − ${b} repeated ${q} times reaches 0, so ${total} ÷ ${b} = <b>${q}</b>.`};},
+  ()=>{const a=R(2,12),b=R(2,12);const total=a*b;
+    return {prompt:`What is <span class="big num">${total} ÷ ${b}</span>?`,choices:mc(a,[a+1,a-1>0?a-1:a+2,b],()=>R(1,12)),answer:a,explain:`${total} ÷ ${b} = <b>${a}</b>, because ${a} × ${b} = ${total}.`};},
+  ()=>{const a=R(2,9),b=R(2,9);const total=a*b;
+    return {prompt:`You know ${a} × ${b} = ${total}. What is <span class="big num">${total} ÷ ${a}</span>?`,input:true,answer:b,explain:`Division undoes multiplication: ${total} ÷ ${a} = <b>${b}</b>.`};},
+  ()=>{const n=R(2,12);const v=R(0,2);
+    if(v===0)return {prompt:`What is <span class="big num">${n} ÷ 1</span>?`,input:true,answer:n,explain:`Any number ÷ 1 stays the same: <b>${n}</b>.`};
+    if(v===1)return {prompt:`What is <span class="big num">${n} ÷ ${n}</span>?`,input:true,answer:1,explain:`Any number (except 0) divided by itself is <b>1</b>.`};
+    return {prompt:`What is <span class="big num">0 ÷ ${n}</span>?`,input:true,answer:0,explain:`0 shared among any number of groups is always <b>0</b>.`};},
+  ()=>{const a=R(2,9),b=R(2,9);const total=a*b;
+    return {prompt:`Fact family check: if ${a} × ${b} = ${total}, which of these is <b>also true</b>?`,choices:mc(`${total} ÷ ${b} = ${a}`,[`${total} ÷ ${a+1} = ${b}`,`${b} ÷ ${total} = ${a}`,`${total} ÷ ${b} = ${a+1}`]),answer:`${total} ÷ ${b} = ${a}`,explain:`The same 3 numbers make 4 facts: ${a}×${b}=${total}, ${b}×${a}=${total}, ${total}÷${a}=${b}, and <b>${total}÷${b}=${a}</b>.`};},
+  ()=>{const each=R(2,9),groups=R(2,9);const total=each*groups;const nouns=pick([['stickers','friends'],['marbles','jars'],['cookies','plates'],['pencils','cups'],['cards','players']]);
+    return {prompt:`${nouns[0][0].toUpperCase()+nouns[0].slice(1)}: There are <b>${total}</b> ${nouns[0]} shared equally among <b>${groups}</b> ${nouns[1]}. How many ${nouns[0]} does each ${nouns[1].slice(0,-1)} get?`,input:true,answer:each,explain:`${total} ÷ ${groups} = <b>${each}</b>.`};}
+],aap:[
+  ()=>{/* two-step: multiply then divide, guaranteed divisible — z is always a real factor of x×y */
+    const x=R(2,9),y=R(2,9);const z=pick(Array.from(new Set([2,3,4,5,6,x,y].filter(f=>f>=2&&(x*y)%f===0))));
+    const ans2=(x*y)/z;
+    return {prompt:`A garden has <b>${x}</b> rows with <b>${y}</b> plants in each row. The plants are split evenly into <b>${z}</b> baskets. How many plants go in each basket?`,input:true,answer:ans2,explain:`Step 1: ${x} × ${y} = ${x*y} plants. Step 2: ${x*y} ÷ ${z} = <b>${ans2}</b> plants per basket.`};},
+  ()=>{/* pick the divisor first, then nudge "extra" so the total always divides evenly */
+    const people=pick([2,3,4,5,6]);const bags=R(2,9),each=R(2,9);let extra=R(2,9);const base=bags*each;let bought=base+extra;const rem=bought%people;if(rem!==0){extra+=(people-rem);bought=base+extra;}
+    return {prompt:`A shop had <b>${bags}</b> bags with <b>${each}</b> toys in each, then got <b>${extra}</b> more toys. The toys are shared equally among <b>${people}</b> classrooms. How many toys does each classroom get?`,input:true,answer:bought/people,explain:`Step 1: ${bags} × ${each} = ${base}. Step 2: ${base} + ${extra} = ${bought}. Step 3: ${bought} ÷ ${people} = <b>${bought/people}</b>.`};},
+  ()=>{const a=R(2,9),b=R(2,9);const total=a*b;
+    return {prompt:`Missing number: <span class="big num">${total} ÷ ? = ${a}</span>`,input:true,answer:b,explain:`${total} ÷ ${b} = ${a}, so the missing number is <b>${b}</b>.`};},
+  ()=>{const a=R(2,9),b=R(2,9);const total=a*b;const c=R(2,9),d=R(2,9);let rhs=c*d;while(rhs===total)d=R(2,9);rhs=c*d;const bigger=total>rhs;
+    return {prompt:`Which is greater?<br><span class="big num">${total} ÷ ${a} &nbsp;◯&nbsp; ${rhs} ÷ ${c}</span>`,choices:['Left side','Right side','They are equal'],fixed:true,answer:total/a===rhs/c?'They are equal':(total/a>rhs/c?'Left side':'Right side'),explain:`Left: ${total} ÷ ${a} = ${total/a}. Right: ${rhs} ÷ ${c} = ${rhs/c}. ${total/a===rhs/c?'They match, so it\'s equal.':`${total/a} ${total/a>rhs/c?'>':'<'} ${rhs/c}, so the <b>${total/a>rhs/c?'left':'right'} side</b> is greater.`}`};},
+  ()=>{const b=R(2,9),q=R(2,9);const total=b*q;
+    return {prompt:`Mystery number! When I am divided by <b>${b}</b>, I give <b>${q}</b>. What number am I?`,input:true,answer:total,explain:`If ? ÷ ${b} = ${q}, then ? = ${b} × ${q} = <b>${total}</b>.`};},
+  ()=>{const n=R(2,12);
+    return {prompt:`Can you divide <b>${n}</b> by <b>0</b>? Why or why not?`,choices:['Yes, it equals 0','Yes, it equals '+n,'No, dividing by 0 is impossible'],fixed:true,answer:'No, dividing by 0 is impossible',explain:`You can never divide any number by 0 — there's <b>no</b> way to split something into 0 equal groups.`};}
+]};
+
+/* ---------- practice pod (reusable multiplication / division practice engine) ---------- */
+function makePod(root,cfg){
+  let mode='grade',q=null,misses=0,done=false,run=0;
+  root.innerHTML=`<div class="pod-top"><div class="seg" role="tablist"><button class="on" data-m="grade" role="tab">Grade level</button><button data-m="aap" role="tab">AAP challenge ★</button></div><div class="pod-stat">Streak <b class="ps num">0</b></div></div>
+  <div class="qcard"><div class="qvis"></div><p class="qp"></p><div class="qans"></div>
+  <div class="fb" aria-live="polite"><span>${mascot(cfg.m,46)}</span><span class="fb-t"></span></div>
+  <div class="explain" hidden></div>
+  <div class="qbtns"><button class="btn sm white how">Show me how</button><button class="btn next">Next question</button></div></div>`;
+  const el=k=>root.querySelector(k);
+  root.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{root.querySelectorAll('.seg button').forEach(x=>x.classList.toggle('on',x===b));mode=b.dataset.m;next();});
+  el('.how').onclick=()=>{el('.explain').hidden=false;};
+  el('.next').onclick=next;
+  const cheers=['Yay! You got it!','Fluff-tastic!','Super sparkly!','Big brain energy!','Perfect!','Math magic!'];
+  function next(){
+    q=pick(cfg.gens[mode])();misses=0;done=false;
+    el('.qvis').innerHTML=q.visual||'';el('.qp').innerHTML=q.prompt;el('.explain').innerHTML=q.explain;el('.explain').hidden=true;
+    const fb=el('.fb');fb.className='fb';el('.fb-t').textContent=mode==='aap'?'AAP level. Take your time!':'You can do it!';
+    const box=el('.qans');box.innerHTML='';
+    if(q.choices){const g=document.createElement('div');g.className='choices';
+      q.choices.forEach(c=>{const b=document.createElement('button');b.className='choice';b.textContent=c;b.onclick=()=>check(c,b);g.appendChild(b);});box.appendChild(g);}
+    else{const r=document.createElement('div');r.className='ansrow';const id=root.id+'-in';r.innerHTML=`<label for="${id}" style="font-weight:900">Answer</label><input class="inp num" id="${id}" inputmode="numeric" autocomplete="off"><button class="btn mint">Check</button>`;box.appendChild(r);
+      const inp=r.querySelector('input');r.querySelector('button').onclick=()=>check(inp.value,null);inp.onkeydown=e=>{if(e.key==='Enter')check(inp.value,null);};}
+  }
+  function check(v,btn){
+    if(done)return;if(String(v).trim()==='')return;
+    const ok=norm(v)===norm(q.answer);const fb=el('.fb');
+    if(ok){done=true;fb.className='fb good';el('.fb-t').textContent=pick(cheers)+(misses?' (+5 XP)':` (+${mode==='aap'?20:10} XP)`);
+      SFX.right();const fbM=root.querySelector('.fb > span:first-child');popMascot(fbM,mode==='aap');burstFrom(fbM,mode==='aap'?1.1:.7);
+      if(btn){btn.classList.add('right');if(window.gsap&&!REDUCED)gsap.fromTo(btn,{scale:1},{scale:1.06,duration:.15,yoyo:true,repeat:1,ease:'power1.out'});}
+      root.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+      award(misses?5:(mode==='aap'?20:10),cfg.unit,mode==='aap');if(misses)streak=0;
+      // light adaptive: record hit if we can extract factors
+      const m=String(q.prompt).match(/(\d+)\s*[×x]\s*(\d+)/);if(m)recordHit(+m[1],+m[2]);
+      root.querySelector('.ps').textContent=streak;run++;el('.explain').hidden=false;
+      if(run%6===0)setTimeout(brainBreak,900);
+    }else{misses++;streak=0;root.querySelector('.ps').textContent=0;fb.className='fb bad';
+      SFX.wrong();wobbleMascot(root.querySelector('.fb > span:first-child'));if(btn){btn.classList.add('wrong');btn.disabled=true;}
+      const m=String(q.prompt).match(/(\d+)\s*[×x]\s*(\d+)/);if(m)recordMiss(+m[1],+m[2]);
+      if(misses>=2){done=true;el('.fb-t').innerHTML=`The answer is <b>${q.answer}</b>. Read how below, then try the next one.`;el('.explain').hidden=false;root.querySelectorAll('.choice').forEach(b=>{b.disabled=true;if(norm(b.textContent)===norm(q.answer))b.classList.add('right');});}
+      else el('.fb-t').textContent='Not quite. Try once more!';}
+  }
+  next();
+}
+makePod($('#podMult'),{unit:'mult',m:'momo',gens:U1});
+makePod($('#podDiv'),{unit:'div',m:'kumo',gens:U2});
+
+/* ---------- fact family triangle ---------- */
+function triNew(){
+  const a=R(2,9),b=R(2,9);const p=a*b;
+  $('#triTop').textContent=p;$('#triL').textContent=a;$('#triR').textContent=b;
+  $('#triFacts').hidden=true;
+  $('#triFacts').innerHTML=`<li>${a} × ${b} = ${p}</li><li>${b} × ${a} = ${p}</li><li>${p} ÷ ${a} = ${b}</li><li>${p} ÷ ${b} = ${a}</li>`;
+}
+$('#triNew').onclick=()=>{SFX.click();triNew();};
+$('#triReveal').onclick=()=>{const box=$('#triFacts');box.hidden=!box.hidden;if(!box.hidden){SFX.right();confettiBurst(.4);award(3);}};
+triNew();
+
+/* ---------- boss-style quiz engine (reused for the belt dojo and the mock test) ---------- */
+function makeQuizEngine(root,cfg){
+  /* cfg: {intro:{mascotKey,title,startLabel}, buildSet:()=>[{...q,u,x}], onFinish:(score,total)=>void, perQuestionXP } */
+  let qs=[],i=0,score=0,answered=false;
+  function intro(){root.innerHTML=`<div class="say">${mascot(cfg.mascotKey,70)}<div style="display:grid;gap:8px"><p class="qp">${cfg.introText}</p><div><button class="btn pink" id="qeGo">${cfg.startLabel}</button></div></div></div>`;root.querySelector('#qeGo').onclick=start;}
+  function start(){qs=cfg.buildSet();i=0;score=0;show();}
+  function bar(){return `<div class="boss-bar">${qs.map((q,k)=>`<i class="${k<i?(q.ok?'ok':'no'):k===i?'cur':''}"></i>`).join('')}</div>`;}
+  function show(){
+    if(i>=qs.length)return finish();answered=false;const q=qs[i];
+    root.innerHTML=`<div class="pod-top">${bar()}<div class="pod-stat num">Question ${i+1} / ${qs.length}</div></div><div class="qcard"><div class="qvis">${q.visual||''}</div><p class="qp">${q.prompt}</p><div class="qans"></div><div class="fb" aria-live="polite"></div><div class="explain" hidden>${q.explain}</div><div class="qbtns"><button class="btn" id="qeNext" hidden>Next</button></div></div>`;
+    const box=root.querySelector('.qans');
+    if(q.choices){const g=document.createElement('div');g.className='choices';q.choices.forEach(c=>{const b=document.createElement('button');b.className='choice';b.textContent=c;b.onclick=()=>check(c,b);g.appendChild(b);});box.appendChild(g);}
+    else{box.innerHTML=`<div class="ansrow"><label for="qeIn" style="font-weight:900">Answer</label><input class="inp num" id="qeIn" inputmode="numeric" autocomplete="off"><button class="btn mint" id="qeChk">Lock it in</button></div>`;const inp=root.querySelector('#qeIn');root.querySelector('#qeChk').onclick=()=>check(inp.value);inp.onkeydown=e=>{if(e.key==='Enter')check(inp.value);};}
+    root.querySelector('#qeNext').onclick=()=>{i++;show();};
+  }
+  function check(v,btn){
+    if(answered||String(v).trim()==='')return;answered=true;const q=qs[i];q.ok=norm(v)===norm(q.answer);
+    root.querySelectorAll('.choice').forEach(b=>{b.disabled=true;if(norm(b.textContent)===norm(q.answer))b.classList.add('right');});
+    if(btn&&!q.ok)btn.classList.add('wrong');
+    const fb=root.querySelector('.fb');
+    if(q.ok){score++;SFX.right();confettiBurst(.5);award(cfg.perQuestionXP||15,q.u,q.x);fb.className='fb good';fb.textContent=`Correct! +${cfg.perQuestionXP||15} XP`;}
+    else{streak=0;SFX.wrong();fb.className='fb bad';fb.innerHTML=`Answer: <b>${q.answer}</b>`;}
+    root.querySelector('.explain').hidden=false;const n=root.querySelector('#qeNext');n.hidden=false;n.textContent=i===qs.length-1?'See my score':'Next';n.focus();
+  }
+  function finish(){cfg.onFinish(score,qs.length,root,intro);}
+  intro();
+  return {restart:intro};
+}
+
+/* ---------- SOL mock test (12 questions, single try, mimics test day) ---------- */
+(function(){
+  const root=$('#mockBox');
+  function buildSet(){
+    const g=(a,u,x)=>Object.assign(pick(a)(),{u,x});
+    return shuffle([
+      g(U1.grade,'mult'),g(U1.grade,'mult'),g(U1.grade,'mult'),g(U1.grade,'mult'),g(U1.grade,'mult'),
+      g(U2.grade,'div'),g(U2.grade,'div'),g(U2.grade,'div'),g(U2.grade,'div'),g(U2.grade,'div'),
+      g(U1.aap,'mult',true),g(U2.aap,'div',true)
+    ]);
+  }
+  makeQuizEngine(root,{
+    mascotKey:'cocoa',
+    introText:S.mock!=null?`Ready for 12 questions? Your best so far: ${S.mock} out of 12.`:'Ready for 12 questions? No score yet.',
+    startLabel:'Start Mock Test',
+    perQuestionXP:15,
+    buildSet,
+    onFinish(score,total,root,intro){
+      const st=score>=11?3:score>=9?2:score>=6?1:0;S.mock=Math.max(S.mock||0,score);if(score>=10)badge('mock');award(st*10);save();
+      root.innerHTML=`<div class="qcard" style="justify-items:center;text-align:center">${mascot(score>=10?'lemi':'cocoa',96)}<p class="stars" aria-label="${st} of 3 stars">${'★'.repeat(st)}${'☆'.repeat(3-st)}</p><p class="qp num">You got ${score} out of ${total}!</p><p style="color:var(--ink2)">${score>=10?'Mock test mastered! Bonus XP added.':'Practice in the pods and the Belt Dojo, then come back for a rematch.'}</p><button class="btn pink" id="mockAgain">Play again</button></div>`;
+      const finM=root.querySelector('.mascot');
+      if(score>=10){confettiBurst(2);setTimeout(()=>{popMascot(finM,true);burstFrom(finM,1.4);},150);}
+      else setTimeout(()=>popMascot(finM),150);
+      root.querySelector('#mockAgain').onclick=intro;
+    }
+  });
+})();
+
+/* ---------- belt dojo: master each times table 1-12 ---------- */
+const BELT_COLORS=['#FFFFFF','#FFE27A','#FFB36B','#8EEBC2','#8FD3FF','#B79CFF','#C99A77','#FF8FB8','#3B2A4A','#F5B800','#C7CBD1','#8FD3FF'];
+const BELT_NAMES=['White','Yellow','Orange','Green','Blue','Purple','Brown','Red','Black','Gold','Silver','Rainbow'];
+const BELT_TARGET=10,BELT_MISS_LIMIT=2;
+let beltOp='mult';if(!S.dbelts)S.dbelts={};
+const beltStore=()=>beltOp==='div'?S.dbelts:S.belts;
+function beltState(n){return beltStore()[n]||{correct:0,misses:0,earned:false};}
+function beltNote(){const el=$('#beltNote');if(el)el.innerHTML=beltOp==='div'?'Division belts: <b>÷ 2</b> means "share by 2". Start these after fair sharing makes sense.':'Multiplication belts: facts and missing factors, no division.';}
+function renderBeltRow(active){
+  $('#beltRow').innerHTML=Array.from({length:12},(_,i)=>i+1).map(n=>{const st=beltState(n);
+    return `<button type="button" class="belt${active===n?' on':''}${st.earned?' earned':''}" data-n="${n}"><span class="dot" style="background:${BELT_COLORS[n-1]}"></span><span class="n">${beltOp==='div'?'÷ '+n:n+'s'}</span></button>`;
+  }).join('');
+  $('#beltRow').querySelectorAll('.belt').forEach(b=>b.onclick=()=>{SFX.click();startBelt(+b.dataset.n);});
+}
+let beltCur=null,beltQ=null,beltDone=false;
+function beltGen(n){
+  const weak=pickWeak();
+  let a=R(1,12);
+  if(weak&&Math.random()<0.4&&(weak.a===n||weak.b===n))a=weak.a===n?weak.b:weak.a;
+  const total=n*a;
+  if(beltOp==='mult'){const kind=pick(['fact','fact','fact','missing']);
+    if(kind==='missing')return {prompt:`<span class="big num">${n} × ___ = ${total}</span>`,input:true,answer:a,explain:`Count by ${n}s until you reach ${total}: ${a} hops. <b>${a}</b>.`};
+    const flip=Math.random()<.5;const x=flip?a:n,y=flip?n:a;
+    return {prompt:`<span class="big num">${x} × ${y}</span> = ?`,input:true,answer:total,explain:`${x} × ${y} = <b>${total}</b>.`};}
+  const kind=pick(['byN','byN','byN','byN','missing']);
+  if(kind==='missing')return {prompt:`<span class="big num">___ ÷ ${n} = ${a}</span>`,input:true,answer:total,explain:`Multiply back: ${n} × ${a} = <b>${total}</b>.`};
+  return {prompt:`<span class="big num">${total} ÷ ${n}</span> = ?`,input:true,answer:a,explain:`${total} ÷ ${n} = <b>${a}</b>, because ${n} × ${a} = ${total}. Think: "${n} times what is ${total}?"`};
+}
+function startBelt(n){
+  beltCur=n;renderBeltRow(n);
+  const st=beltState(n);
+  const box=$('#beltActive');
+  box.innerHTML=`<div class="row" style="justify-content:space-between">
+      <h4>${BELT_NAMES[n-1]} belt · ${beltOp==='div'?'divide by '+n:'the '+n+'s table'}${st.earned?' — earned!':''}</h4>
+      <span class="pod-stat">${st.correct} of ${BELT_TARGET} to earn</span>
+    </div>
+    <div class="beltbar"><i style="width:${Math.min(100,st.correct/BELT_TARGET*100)}%"></i></div>
+    <div class="qcard"><div class="qp" id="beltQp"></div><div class="ansrow"><label for="beltIn" style="font-weight:900">Answer</label><input class="inp num" id="beltIn" inputmode="numeric" autocomplete="off"><button class="btn mint" id="beltChk">Check</button></div>
+    <div class="fb" aria-live="polite"><span>${mascot('taki',46)}</span><span class="fb-t" id="beltFbT"></span></div>
+    <div class="explain" hidden id="beltExplain"></div></div>`;
+  nextBeltQ();
+  const inp=box.querySelector('#beltIn');
+  box.querySelector('#beltChk').onclick=()=>checkBelt(inp.value);
+  inp.onkeydown=e=>{if(e.key==='Enter')checkBelt(inp.value);};
+  inp.focus();
+}
+function nextBeltQ(){
+  beltQ=beltGen(beltCur);beltDone=false;
+  $('#beltQp').innerHTML=beltQ.prompt;$('#beltExplain').innerHTML=beltQ.explain;$('#beltExplain').hidden=true;
+  const fb=$('#beltFbT');if(fb){fb.textContent='Train those facts!';}
+  const box=$('#beltActive');box.querySelector('.fb').className='fb';
+  const inp=$('#beltIn');if(inp){inp.value='';inp.focus();}
+}
+function checkBelt(v){
+  if(beltDone||String(v).trim()==='')return;beltDone=true;
+  const ok=norm(v)===norm(beltQ.answer);const n=beltCur;const st=beltState(n);
+  const fbEl=$('#beltActive').querySelector('.fb');const fbT=$('#beltFbT');
+  if(ok){st.correct++;st.misses=0;SFX.right();fbEl.className='fb good';fbT.textContent='Correct!';
+    award(4,null,false);confettiBurst(.3);
+    const m=String(beltQ.prompt).match(/(\d+)\s*[×x÷]\s*(\d+)/);if(m)recordHit(+m[1],+m[2]||n);
+    if(!st.earned&&st.correct>=BELT_TARGET){st.earned=true;toast(`${BELT_NAMES[n-1]} ${beltOp==='div'?'division ':''}belt earned!`);SFX.badge();confettiBurst(1.2);award(15);
+      if(beltOp==='mult'&&Array.from({length:12},(_,i)=>i+1).every(k=>beltState(k).earned))badge('dojo');}
+  }else{st.misses++;streak=0;SFX.wrong();fbEl.className='fb bad';fbT.innerHTML=`Not quite — the answer is <b>${beltQ.answer}</b>.`;
+    const m=String(beltQ.prompt).match(/(\d+)\s*[×x÷]\s*(\d+)/);if(m)recordMiss(+m[1],+m[2]||n);
+    if(st.misses>=BELT_MISS_LIMIT){st.correct=Math.max(0,st.correct-1);st.misses=0;}}
+  beltStore()[n]=st;save();
+  $('#beltExplain').hidden=false;
+  setTimeout(()=>{renderBeltRow(n);startBeltRefresh(n);},900);
+}
+function startBeltRefresh(n){
+  const st=beltState(n);const box=$('#beltActive');
+  box.querySelector('h4').innerHTML=`${BELT_NAMES[n-1]} belt · ${beltOp==='div'?'divide by '+n:'the '+n+'s table'}${st.earned?' — earned!':''}`;
+  box.querySelector('.pod-stat').textContent=`${st.correct} of ${BELT_TARGET} to earn`;
+  box.querySelector('.beltbar i').style.width=Math.min(100,st.correct/BELT_TARGET*100)+'%';
+  nextBeltQ();
+}
+renderBeltRow(null);beltNote();
+function setBeltOp(op){beltOp=op;beltCur=null;$('#beltOp').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===op));beltNote();renderBeltRow(null);$('#beltActive').innerHTML='<h4>Pick a belt above to start training</h4>';}
+$('#beltOp').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.dataset.v===beltOp)return;SFX.click();setBeltOp(b.dataset.v);});
+
+/* ---------- Table Studio: one page per times table (2-12) ---------- */
+(function(){
+  if(!S.tbl)S.tbl={};
+  const TCOL={2:'#FF9EC4',3:'#8FD3FF',4:'#FFD24D',5:'#8EEBC2',6:'#FFB36B',7:'#B79CFF',8:'#FF8FB8',9:'#7CC8F5',10:'#6FDCAB',11:'#F4CF4C',12:'#A98BF5'};
+  const TBG={2:'#FFE3EE',3:'#E4F5FF',4:'#FFF6D1',5:'#DFF9EC',6:'#FFEBD6',7:'#EFE8FF',8:'#FFE3EE',9:'#E4F5FF',10:'#DFF9EC',11:'#FFF6D1',12:'#EFE8FF'};
+  const KNOWN=[2,3,4,5,10],NOW=6;
+  const INFO={
+   2:{mas:'momo',line:'Doubles! Every answer is a number added to itself.',trick:'Double it: <b>2 × 7</b> is 7 + 7.',ex:'2 × 7 = 7 + 7 = 14',fun:'All the answers are even: 2, 4, 6, 8, 10…'},
+   3:{mas:'kumo',line:'Three hops at a time. Say it, hop it, tap it on your fingers.',trick:'Double it, then add one more group: <b>3 × 6</b> = (2 × 6) + 6.',ex:'3 × 6 = 12 + 6 = 18',fun:'The answers go odd, even, odd, even: 3, 6, 9, 12, 15…'},
+   4:{mas:'lemi',line:'Fours are doubles of doubles.',trick:'Double, then double again: <b>4 × 6</b> → 6 + 6 = 12 → 12 + 12 = 24.',ex:'4 × 6 = double(double 6) = 24',fun:'The ones digits repeat: 4, 8, 2, 6, 0, then again 4, 8, 2, 6, 0.'},
+   5:{mas:'mintu',line:'Fives are easy: the answer always ends in 5 or 0.',trick:'Think of a clock: <b>5 × 7</b> is 7 groups of 5 minutes = 35.',ex:'5 × 7 = 35 (ends in 5 because 7 is odd)',fun:'Odd × 5 ends in 5. Even × 5 ends in 0.'},
+   6:{mas:'cocoa',line:'Sixes are fives plus one more group.',trick:'Use the 5s: <b>6 × 7</b> = (5 × 7) + 7.',ex:'6 × 7 = 35 + 7 = 42',fun:'Even × 6 repeats the number: 6 × 4 = 24, 6 × 6 = 36.'},
+   7:{mas:'momo',line:'Sevens: split into 5 and 2, then add.',trick:'Split the 7: <b>7 × 6</b> = (5 × 6) + (2 × 6).',ex:'7 × 6 = 30 + 12 = 42',fun:'Learn 7 × 7 = 49 and 7 × 8 = 56 as special friends.'},
+   8:{mas:'kumo',line:'Eights are doubles of the fours.',trick:'Double the 4s: <b>8 × 6</b> = (4 × 6) + (4 × 6).',ex:'8 × 6 = 24 + 24 = 48',fun:'Ones digits count down: 8, 6, 4, 2, 0.'},
+   9:{mas:'lemi',line:'Nines are tens minus one group.',trick:'Ten minus one: <b>9 × 6</b> = (10 × 6) − 6.',ex:'9 × 6 = 60 − 6 = 54',fun:'The digits of each answer add to 9: 5 + 4 = 9.'},
+   10:{mas:'mintu',line:'Tens are the easiest: add a zero.',trick:'Put a <b>0</b> on the end: 10 × 7 = 70.',ex:'10 × 7 = 70',fun:'Skip count by 10: the ones digit is always 0.'},
+   11:{mas:'cocoa',line:'Bonus table! Up to 9 × 11, repeat the digit.',trick:'Repeat the digit: <b>11 × 4</b> = 44.',ex:'11 × 4 = 44 · 11 × 9 = 99',fun:'10 × 11 = 110 breaks the pattern.'},
+   12:{mas:'momo',line:'Bonus table! A dozen: tens plus twos.',trick:'Split it: <b>12 × 6</b> = (10 × 6) + (2 × 6).',ex:'12 × 6 = 60 + 12 = 72',fun:'A dozen eggs in each carton: 3 cartons = 36 eggs.'}
+  };
+  const NAMES=['Momo','Kumo','Lemi','Taki','Mintu','Cocoa'];
+  let cur=null,hopK=0,circHelp=null,coverOn=false;
+  const chips=$('#tChips'),page=$('#tPage');
+  function chipsRender(){
+    chips.innerHTML=Array.from({length:11},(_,i)=>i+2).map(n=>`<button type="button" role="tab" class="tchip${cur===n?' on':''}${(S.tbl[n]&&S.tbl[n].best>=7)?' done':''}${n>10?' bonus':''}${KNOWN.includes(n)?' known':''}${n===NOW?' now':''}" data-n="${n}" aria-selected="${cur===n}" title="${n>10?'Bonus table':'The '+n+'s'}">${n}s</button>`).join('');
+    chips.querySelectorAll('.tchip').forEach(b=>b.onclick=()=>{SFX.click();open(+b.dataset.n);});
+  }
+  function dotsFor(k,n,col){return `<i>${('<b style="--c:'+col+'"></b>').repeat(n)}</i>`.repeat(k);}
+  function hopSvg(n,k){
+    const N=10,W=470,L=28,seg=(W-2*L)/N,y=62;let g=`<line x1="10" x2="${W-6}" y1="${y}" y2="${y}" stroke="#3B2A4A" stroke-width="3"/>`;
+    for(let i=0;i<=N;i++){const x=L+i*seg;const on=i<=k;g+=`<line x1="${x}" x2="${x}" y1="${y-7}" y2="${y+7}" stroke="#3B2A4A" stroke-width="2.4"/><text x="${x}" y="${y+26}" text-anchor="middle" font-family="Mochiy Pop One,Zen Maru Gothic,sans-serif" font-size="${n>=10?11:13}" fill="${on?'#3B2A4A':'#B9A9C6'}">${on?i*n:'?'}</text>`;}
+    for(let i=0;i<k;i++){const a=L+i*seg,b=L+(i+1)*seg;g+=`<path d="M${a} ${y-4} Q${(a+b)/2} ${y-44} ${b} ${y-4}" fill="none" stroke="${TCOL[n]}" stroke-width="5" stroke-linecap="round"/><text x="${(a+b)/2}" y="${y-30}" text-anchor="middle" font-family="Mochiy Pop One,sans-serif" font-size="12" fill="#3B2A4A">+${n}</text>`;}
+    if(k>0)g+=`<circle cx="${L+k*seg}" cy="${y}" r="8" fill="${TCOL[n]}" stroke="#3B2A4A" stroke-width="2.5"/>`;
+    return `<svg viewBox="0 0 ${W} 100" role="img" aria-label="Number line with ${k} hops of ${n}">${g}</svg>`;
+  }
+  function hopText(n,k){
+    if(k===0)return `Press <b>Hop!</b> and say the number each time. Put up one finger for every hop.`;
+    const p=(k-1)*n,q=k*n;
+    return `<b class="num">${p} + ${n} = ${q}</b>. That is <b>${k} hop${k>1?'s':''} of ${n}</b>, so <b class="num">${k} × ${n} = ${q}</b>.${k===10?` All ten hops: you counted by ${n} to ${10*n}!`:''}`;
+  }
+  function circlesHTML(n,help){
+    const given=help==='start'?3:help==='almost'?1:0;let h='';
+    for(let i=1;i<=10;i++){
+      const v=i*n;
+      h+=(i>1?'<span class="arr">→</span>':'')+(i<=given?`<input class="circ given" value="${v}" readonly tabindex="-1" aria-label="given ${v}">`:`<input class="circ" data-v="${v}" inputmode="numeric" autocomplete="off" aria-label="Hop ${i}">`);
+    }
+    return h;
+  }
+  function render(){
+    const n=cur,I=INFO[n],col=TCOL[n];
+    if(circHelp==null)circHelp=KNOWN.includes(n)?'solo':'start';
+    const rows=Array.from({length:10},(_,i)=>i+1).map(k=>`<div class="lrow"><span class="eq num">${n} × ${k}</span><span class="dots">${dotsFor(k,n,col).slice(0,5000)}</span><span class="ans num" tabindex="0" role="button" aria-label="Show answer to ${n} times ${k}">${n*k}</span></div>`).join('');
+    page.style.setProperty('--tbg',TBG[n]);
+    page.innerHTML=`<div class="thead">${mascot(I.mas,64)}<div><h3>The ${n}s table${n>10?' (bonus)':''}</h3><p>${I.line}</p></div></div>
+    <div class="tgrid">
+      <div class="tcard wide"><h4>1 · Hop it <em>SAY IT</em></h4><div class="hopbox" id="tsHopBox">${hopSvg(n,hopK)}</div><p class="hopsay num" id="tsHopSay" aria-live="polite">${hopText(n,hopK)}</p>
+        <div class="trow"><button class="btn" id="tsHopGo">Hop!</button><button class="btn sm white" id="tsHopRe">Start over</button></div></div>
+      <div class="tcard wide"><h4>2 · Fill the circles <em>WRITE IT</em></h4><p style="font-size:14px;margin:0">Count by ${n}s and write each number. Use your fingers!</p>
+        <div class="seg" id="circLv" role="group" aria-label="How much help?"><button data-v="start" class="${circHelp==='start'?'on':''}">Start me</button><button data-v="almost" class="${circHelp==='almost'?'on':''}">Almost</button><button data-v="solo" class="${circHelp==='solo'?'on':''}">On my own</button></div>
+        <div class="circrow" id="circRow">${circlesHTML(n,circHelp)}</div><p class="num" style="margin:0;font-weight:900" id="circMsg" aria-live="polite"></p>
+        <div class="trow"><button class="btn mint" id="circChk">Check</button><button class="btn sm white" id="circShow">Show me</button><button class="btn sm white" id="circNew">Clear</button></div></div>
+      <div class="tcard"><h4>3 · Fact ladder <em>LEARN IT</em></h4><div class="trow"><label style="font-size:14px;display:flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" id="coverCk" ${coverOn?'checked':''}> Cover the answers (tap to peek)</label></div><div class="ladder${coverOn?' cover':''}" id="ladder">${rows}</div></div>
+      <div class="tcard"><h4>4 · Trick <em>REMEMBER</em></h4><div class="trick"><span>${I.trick}</span><span class="ex">${I.ex}</span></div><div class="tsol"><b>Pattern:</b> ${I.fun}</div>
+        <div class="tsol"><b>On the SOL:</b> they may ask "Which number sentence shows ${[3,4,5,6][n%4]} groups of ${n}?" or give a picture of equal groups. Read what is asked, then pick the sentence that matches.</div>
+        <div class="trow"><button class="btn sm pink" id="toBelt">Train the ${n}s belt →</button><button class="btn sm white" id="toPrint">Print worksheet</button></div></div>
+      <div class="tcard wide"><h4>5 · Undo it <em>÷ DIVISION</em></h4><p style="margin:0;font-size:15px">Multiplication and division are a team. The top of the triangle is the product. Cover the top: <b>multiply</b>. Cover a bottom number: <b>divide</b>.</p>
+        <div class="trirow"><div class="tribox" id="tsTriBox"></div><div style="display:grid;gap:8px;align-content:center"><div class="trow"><button class="btn sm white" data-h="top">Cover the top</button><button class="btn sm white" data-h="l">Cover left</button><button class="btn sm white" data-h="r">Cover right</button></div><p class="hopsay num" id="tsTriSay" aria-live="polite"></p><div class="trow"><button class="btn sm mint" id="tsTriShow">Show me</button><button class="btn sm pink" id="tsTriNew">New numbers</button></div></div></div></div>
+      <div class="tcard wide"><h4>6 · Quick quiz <em>8 QUESTIONS</em></h4><div class="pod sticker" id="tQuiz"></div></div>
+    </div>`;
+    wire();
+  }
+  function wire(){
+    const n=cur;
+    $('#tsHopGo').onclick=()=>{if(hopK<10){hopK++;SFX.click();}else{SFX.right();}$('#tsHopBox').innerHTML=hopSvg(n,hopK);$('#tsHopSay').innerHTML=hopText(n,hopK);if(hopK===10){confettiBurst(.5);award(5,null,false);}};
+    $('#tsHopRe').onclick=()=>{hopK=0;SFX.click();$('#tsHopBox').innerHTML=hopSvg(n,0);$('#tsHopSay').innerHTML=hopText(n,0);};
+    $('#circLv').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;SFX.click();circHelp=b.dataset.v;$('#circLv').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));$('#circRow').innerHTML=circlesHTML(n,circHelp);$('#circMsg').textContent='';wireCirc();});
+    wireCirc();
+    $('#circChk').onclick=()=>checkCirc(false);
+    $('#circShow').onclick=()=>{SFX.click();$('#circRow').querySelectorAll('input.circ[data-v]').forEach(i=>{i.value=i.dataset.v;i.classList.remove('ok','no');});$('#circMsg').textContent=`Now cover it up and try again from memory.`;};
+    $('#circNew').onclick=()=>{SFX.click();$('#circRow').querySelectorAll('input.circ[data-v]').forEach(i=>{i.value='';i.classList.remove('ok','no');});$('#circMsg').textContent='';const f=$('#circRow').querySelector('input.circ[data-v]');if(f)f.focus();};
+    $('#coverCk').onchange=e=>{coverOn=e.target.checked;$('#ladder').classList.toggle('cover',coverOn);$('#ladder').querySelectorAll('.ans').forEach(a=>a.classList.remove('show'));};
+    $('#ladder').addEventListener('click',e=>{const a=e.target.closest('.ans');if(a&&coverOn){SFX.click();a.classList.toggle('show');}});
+    $('#toBelt').onclick=()=>{SFX.click();showTab('dojo');setTimeout(()=>{if(beltOp!=='mult')setBeltOp('mult');startBelt(n);const el=$('#beltActive');if(el)el.scrollIntoView({block:'center'});},60);};
+    $('#toPrint').onclick=()=>printWorksheet(n);
+    tri(n);
+    quiz(n);
+  }
+  function triSvg(p,a,b,hide,show){const s=170,h=s*.86;const T=(x,y,v,fs,c)=>`<text x="${x}" y="${y}" text-anchor="middle" font-family="Mochiy Pop One,Zen Maru Gothic,sans-serif" font-size="${fs}" fill="${c||'#3B2A4A'}">${v}</text>`;
+    const box=(x,y,v,hid)=>hid&&!show?`<rect x="${x-20}" y="${y-22}" width="40" height="30" rx="7" fill="#fff" stroke="#3B2A4A" stroke-width="2.4"/>`+T(x,y,'?',18):T(x,y,v,22,hid?'#D63A72':'#3B2A4A');
+    return `<svg viewBox="0 0 ${s+12} ${h+8}" role="img" aria-label="fact family triangle"><path d="M${s/2+6} 8 L${s+2} ${h} L10 ${h} Z" fill="${TBG[cur]}" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round"/><line x1="${s*.25+8}" x2="${s*.75+6}" y1="${h*.55}" y2="${h*.55}" stroke="#3B2A4A" stroke-width="1.6" stroke-dasharray="4 3"/>${T(s/2+6,h*.55+19,'× ÷',14,'#6E5A7E')}${box(s/2+6,h*.42,p,hide==='top')}${box(s*.26,h-14,a,hide==='l')}${box(s*.8,h-14,b,hide==='r')}</svg>`;}
+  function tri(n){let k=R(2,10),hide=null,show=false;
+    const draw=()=>{$('#tsTriBox').innerHTML=triSvg(n*k,n,k,hide,show);
+      const say=$('#tsTriSay');
+      if(!hide)say.innerHTML=`Facts: <b>${n} × ${k} = ${n*k}</b> · ${k} × ${n} = ${n*k} · <b>${n*k} ÷ ${n} = ${k}</b> · ${n*k} ÷ ${k} = ${n}`;
+      else if(hide==='top')say.innerHTML=show?`${n} × ${k} = <b>${n*k}</b>`:`Multiply: <b>${n} × ${k} = ?</b>`;
+      else{const seen=hide==='l'?k:n,miss=hide==='l'?n:k;say.innerHTML=show?`${n*k} ÷ ${seen} = <b>${miss}</b> because ${seen} × ${miss} = ${n*k}.`:`Divide: <b>${n*k} ÷ ${seen} = ?</b> Think: "${seen} times what is ${n*k}?"`;}
+      $('#tsTriBox').closest('.tcard').querySelectorAll('[data-h]').forEach(b=>b.classList.toggle('pink',b.dataset.h===hide));};
+    $('#tsTriBox').closest('.tcard').querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{SFX.click();hide=b.dataset.h;show=false;draw();});
+    $('#tsTriShow').onclick=()=>{SFX.click();if(hide){show=true;draw();}};
+    $('#tsTriNew').onclick=()=>{SFX.click();k=R(2,10);hide=pick(['top','l','r']);show=false;draw();};
+    draw();}
+  function wireCirc(){
+    const ins=[...$('#circRow').querySelectorAll('input.circ[data-v]')];
+    ins.forEach((inp,ix)=>{inp.addEventListener('input',()=>{inp.classList.remove('ok','no');inp.value=inp.value.replace(/\D/g,'').slice(0,3);});
+      inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(ins[ix+1])ins[ix+1].focus();else checkCirc(false);}});});
+    if(ins[0])ins[0].focus({preventScroll:true});
+  }
+  function checkCirc(){
+    const ins=[...$('#circRow').querySelectorAll('input.circ[data-v]')];let ok=0,blank=0;
+    ins.forEach(i=>{if(i.value.trim()===''){blank++;i.classList.remove('ok','no');return;}const good=norm(i.value)===norm(i.dataset.v);i.classList.toggle('ok',good);i.classList.toggle('no',!good);if(good)ok++;});
+    const msg=$('#circMsg');
+    if(ok===ins.length){msg.textContent=`All ${ins.length} circles are right! You can count by ${cur}s.`;SFX.right();confettiBurst(.8);award(10,null,false);}
+    else if(blank===ins.length){msg.textContent='Write a number in each circle, then press Check.';}
+    else{SFX.wrong();msg.textContent=`${ok} of ${ins.length} right. Fix the pink ones: add ${cur} to the number before it.`;}
+  }
+  function quiz(n){
+    const root=$('#tQuiz');
+    const ks=()=>shuffle(Array.from({length:9},(_,i)=>i+2));
+    function build(){
+      const K=ks(),w=pick(NAMES),it=pick([['bags','marbles'],['boxes','crayons'],['plates','cookies'],['vases','flowers'],['packs','stickers']]);
+      const mk=[
+        k=>({prompt:`<span class="big num">${n} × ${k} = ?</span>`,input:true,answer:n*k,explain:`Count by ${n}s, ${k} times: <b>${n*k}</b>.`}),
+        k=>({prompt:`<span class="big num">${k} × ${n} = ?</span>`,input:true,answer:n*k,explain:`Flip it: ${k} × ${n} = ${n} × ${k} = <b>${n*k}</b>.`}),
+        k=>({prompt:`<span class="big num">${n} × ___ = ${n*k}</span>`,input:true,answer:k,explain:`Count by ${n}s until you reach ${n*k}: that is ${k} hops. <b>${k}</b>.`}),
+        k=>({prompt:`Which number sentence matches <b>${k} groups of ${n}</b>?`,choices:mc(`${k} × ${n}`,[`${k} + ${n}`,`${n} × ${n}`,`${k} × ${k}`]),answer:`${k} × ${n}`,explain:`${k} groups of ${n} is <b>${k} × ${n} = ${n*k}</b>.`}),
+        k=>({prompt:`${w} has <b>${k}</b> ${it[0]} with <b>${n}</b> ${it[1]} in each. How many ${it[1]} in all?`,input:true,answer:n*k,explain:`Equal groups: ${k} × ${n} = <b>${n*k}</b>.`}),
+        k=>{const s=Array.from({length:4},(_,i)=>n*(k-1+i));const h=1+R(0,2);return {prompt:`Count by ${n}s: <span class="big num">${s.map((v,i)=>i===h?'___':v).join(', ')}</span>`,input:true,answer:s[h],explain:`Add ${n} each time: <b>${s[h]}</b>.`};},
+        k=>({prompt:`Which equals <b>${n} × ${k}</b>?`,choices:mc(String(n*k),[String(n*k+n),String(n*k-n),String(n+k)]),answer:String(n*k),explain:`${n} × ${k} = <b>${n*k}</b>. Wrong answers are one group too many, one too few, or adding.`}),
+        k=>{const g=Math.min(k,6),p=n*g;return {visual:`<svg viewBox="0 0 ${g*58+8} 40" width="${g*58+8}" style="max-width:100%">${Array.from({length:g},(_,j)=>`<rect x="${6+j*58}" y="4" width="50" height="32" rx="8" fill="${TCOL[n]}" stroke="#3B2A4A" stroke-width="2"/><text x="${31+j*58}" y="26" text-anchor="middle" font-family="Mochiy Pop One,sans-serif" font-size="15" fill="#3B2A4A">${n}</text>`).join('')}</svg>`,prompt:`Each box holds <b>${n}</b>. There are ${g} boxes. How many in all?`,input:true,answer:p,explain:`${g} × ${n} = <b>${p}</b>.`};}
+      ];
+      return shuffle(mk).slice(0,8).map((f,i)=>Object.assign(f(K[i%K.length]),{u:'mult',x:false}));
+    }
+    makeQuizEngine(root,{mascotKey:INFO[n].mas,introText:`Eight questions on the ${n}s table. Get 7 right to earn a check mark on the ${n}s tab.${S.tbl[n]?` Your best: ${S.tbl[n].best} of 8.`:''}`,startLabel:'Start the quiz',perQuestionXP:10,buildSet:build,
+      onFinish(score,total,r,intro){
+        const best=Math.max(score,(S.tbl[n]&&S.tbl[n].best)||0);S.tbl[n]={best};if(score>=7){award(15);}save();chipsRender();
+        r.innerHTML=`<div class="qcard" style="justify-items:center;text-align:center">${mascot(score>=7?'lemi':'cocoa',90)}<p class="qp num">${score} out of ${total}</p><p style="color:var(--ink2)">${score>=7?`The ${n}s tab earned its check mark. Try the next table, or come back tomorrow to keep it fresh.`:`Almost! Go back to the hop line and the fact ladder, then try again.`}</p><div class="row" style="justify-content:center"><button class="btn pink" id="tqAgain">Try again</button>${n<12?`<button class="btn white" id="tqNext">Next: the ${n+1}s</button>`:''}</div></div>`;
+        if(score>=7)confettiBurst(1.4);
+        r.querySelector('#tqAgain').onclick=intro;const nx=r.querySelector('#tqNext');if(nx)nx.onclick=()=>{SFX.click();open(n+1);window.scrollTo({top:$('#tChips').getBoundingClientRect().top+scrollY-10});};
+      }});
+  }
+  function printWorksheet(n){
+    const facts=Array.from({length:12},(_,i)=>`${n} × ${i+1} = _____`);
+    const mixed=shuffle(Array.from({length:8},(_,i)=>{const k=R(2,12);return `${k} × ${n} = _____`}));
+    const html=`<!doctype html><html><head><meta charset=utf-8><title>${n}s Worksheet</title><style>body{font-family:system-ui,sans-serif;padding:24px;max-width:700px;margin:0 auto}h1{font-size:22px}table{border-collapse:collapse;width:100%;margin:12px 0}td{border:1px solid #ccc;padding:8px 12px;font-size:16px} .facts{display:grid;grid-template-columns:1fr 1fr;gap:8px} @media print{body{padding:12px}}</style></head><body><h1>Times Table Dojo · The ${n}s</h1><p>Name: _______________________ &nbsp; Date: ____________</p><h2>Facts</h2><div class="facts">${facts.map(f=>`<div>${f}</div>`).join('')}</div><h2>Mixed practice</h2><div class="facts">${mixed.map(f=>`<div>${f}</div>`).join('')}</div><p style="margin-top:24px;font-size:13px;color:#666">From Times Table Dojo</p></body></html>`;
+    const w=window.open('','_blank');if(w){w.document.write(html);w.document.close();setTimeout(()=>w.print(),300);}
+  }
+  function open(n){cur=n;hopK=0;circHelp=null;chipsRender();render();}
+  window.tablesOpen=open;
+  let last=NOW;try{last=+(localStorage.getItem('g3-last-table2')||NOW);}catch(e){}if(!(last>=2&&last<=12))last=NOW;open(last);
+  chips.addEventListener('click',()=>{try{localStorage.setItem('g3-last-table2',String(cur));}catch(e){}});
+})();
+
+/* ---------- 2D Array Builder (top-down SVG grid, replaces the old 3D cube stack) ---------- */
+const SVGNS='http://www.w3.org/2000/svg';
+function svgEl(tag,attrs){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;}
+const arr={rows:3,cols:4};
+let arrCells=[];
+function arrUI(){
+  $('#arrRowsCt').textContent=arr.rows;$('#arrColsCt').textContent=arr.cols;
+  const total=arr.rows*arr.cols;
+  $('#arrRead').innerHTML=`<div><span>Equation</span><span class="big num">${arr.rows} × ${arr.cols}</span></div><div><span>Total</span><span class="big num">${total}</span></div><div><span>Flip it</span><span class="num">${arr.cols} × ${arr.rows} = ${total}</span></div><div><span>Skip count</span><span class="num">${Array.from({length:arr.rows},(_,i)=>(i+1)*arr.cols).join(', ')}</span></div>`;
+  renderArrayGrid();
+}
+function renderArrayGrid(){
+  const svg=$('#arrSvg');
+  const cell=Math.min(40,Math.floor(280/Math.max(arr.rows,arr.cols))),gap=6;
+  const W=arr.cols*(cell+gap)+gap,H=arr.rows*(cell+gap)+gap;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const need=arr.rows*arr.cols;
+  while(arrCells.length>need){const c=arrCells.pop();if(window.gsap&&!REDUCED)gsap.to(c,{attr:{width:0,height:0},duration:.16,ease:'power1.in',onComplete(){c.remove();}});else c.remove();}
+  let addedNew=false,k=0;
+  for(let r=0;r<arr.rows;r++)for(let c=0;c<arr.cols;c++){
+    const x=gap+c*(cell+gap),y=gap+r*(cell+gap);
+    let rect=arrCells[k];const isNew=!rect;
+    if(isNew){rect=svgEl('rect',{rx:6,fill:PAL[r%PAL.length],stroke:'#3B2A4A','stroke-width':1.5,x:x+cell/2,y:y+cell/2,width:0,height:0});svg.appendChild(rect);arrCells[k]=rect;addedNew=true;}
+    else rect.setAttribute('fill',PAL[r%PAL.length]);
+    if(window.gsap&&!REDUCED)gsap.to(rect,{attr:{x,y,width:cell,height:cell},duration:isNew?.32:.24,ease:isNew?'back.out(2.4)':'power2.out'});
+    else{rect.setAttribute('x',x);rect.setAttribute('y',y);rect.setAttribute('width',cell);rect.setAttribute('height',cell);}
+    k++;
+  }
+  if(addedNew){SFX.click();confettiBurst(.18);}
+}
+$('#arrRowsMinus').onclick=()=>{if(arr.rows>1)arr.rows--;arrUI();};
+$('#arrRowsPlus').onclick=()=>{if(arr.rows<12)arr.rows++;arrUI();};
+$('#arrColsMinus').onclick=()=>{if(arr.cols>1)arr.cols--;arrUI();};
+$('#arrColsPlus').onclick=()=>{if(arr.cols<12)arr.cols++;arrUI();};
+$('#arrRand').onclick=()=>{arr.rows=R(2,9);arr.cols=R(2,9);arrUI();};
+
+/* ---------- 2D Skip-Count Hopper (flat number line, replaces the old 3D number line) ---------- */
+const HOP_N=12,HOP_SEG=48,HOP_PAD=32,HOP_Y=58;
+const hop={table:4,dir:1,stepIdx:0};
+let hopCritter=null,hopTrail=null;
+function hopBuildLine(){
+  const svg=$('#hopSvg');svg.innerHTML='';
+  const W=HOP_N*HOP_SEG+HOP_PAD*2,H=100;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.appendChild(svgEl('line',{x1:HOP_PAD,x2:W-HOP_PAD,y1:HOP_Y,y2:HOP_Y,stroke:'#3B2A4A','stroke-width':4,'stroke-linecap':'round'}));
+  for(let i=0;i<=HOP_N;i++){
+    const x=HOP_PAD+i*HOP_SEG,big=i%3===0;
+    svg.appendChild(svgEl('line',{x1:x,x2:x,y1:HOP_Y-10,y2:HOP_Y+10,stroke:'#3B2A4A','stroke-width':big?3:2}));
+    const lb=svgEl('text',{x,y:HOP_Y+30,'text-anchor':'middle','font-family':"'Zen Maru Gothic',system-ui,sans-serif",'font-size':big?22:18,'font-weight':900,fill:big?'#5B3FB5':'#6E5A7E'});
+    lb.textContent=i*hop.table;svg.appendChild(lb);
+  }
+  hopTrail=svgEl('g',{});svg.appendChild(hopTrail);
+  hopCritter=svgEl('g',{});
+  hopCritter.innerHTML='<circle r="15" fill="#FFD24D" stroke="#3B2A4A" stroke-width="2.5"/><circle cx="-5.5" cy="-3" r="2.4" fill="#3B2A4A"/><circle cx="5.5" cy="-3" r="2.4" fill="#3B2A4A"/><ellipse cx="-8.5" cy="4" rx="3.2" ry="1.8" fill="#FF7FA8" opacity=".6"/><ellipse cx="8.5" cy="4" rx="3.2" ry="1.8" fill="#FF7FA8" opacity=".6"/>';
+  svg.appendChild(hopCritter);
+}
+function hopTransform(x,y){hopCritter.setAttribute('transform',`translate(${x},${y})`);}
+const hopView={
+  place(){
+    hopBuildLine();
+    const idx=hop.dir>0?0:HOP_N;
+    hopTransform(HOP_PAD+idx*HOP_SEG,HOP_Y);
+  },
+  go(val){
+    const idx=val/hop.table,targetX=HOP_PAD+idx*HOP_SEG;
+    const isFinal=(hop.dir>0&&idx>=HOP_N)||(hop.dir<0&&idx<=0);
+    const m=(hopCritter.getAttribute('transform')||'').match(/translate\(([-\d.]+),([-\d.]+)\)/);
+    const startX=m?parseFloat(m[1]):targetX;
+    if(hopTrail){if(hop.dir>0||true){const a=Math.min(startX,targetX),b2=Math.max(startX,targetX);hopTrail.appendChild(svgEl('path',{d:`M${a} ${HOP_Y-4} Q${(a+b2)/2} ${HOP_Y-44} ${b2} ${HOP_Y-4}`,fill:'none',stroke:hop.dir>0?'#FF8FB8':'#8FD3FF','stroke-width':5,'stroke-linecap':'round'}));const t=svgEl('text',{x:(a+b2)/2,y:HOP_Y-30,'text-anchor':'middle','font-family':"'Zen Maru Gothic',system-ui,sans-serif",'font-size':15,'font-weight':900,fill:'#3B2A4A'});t.textContent=(hop.dir>0?'+':'−')+hop.table;hopTrail.appendChild(t);}}
+    if(window.gsap&&!REDUCED){
+      const p={x:startX,y:HOP_Y};
+      gsap.timeline()
+        .to(p,{x:targetX,y:HOP_Y-18,duration:.2,ease:'power1.out',onUpdate(){hopTransform(p.x,p.y);}})
+        .to(p,{y:HOP_Y,duration:.16,ease:'bounce.out',onUpdate(){hopTransform(p.x,p.y);},onComplete(){
+          SFX.click();
+          if(isFinal){
+            gsap.fromTo(hopCritter,{scale:1},{scale:1.5,duration:.2,ease:'back.out(3)',transformOrigin:'50% 50%',onComplete(){gsap.to(hopCritter,{scale:1,duration:.35,ease:'elastic.out(1,.5)',transformOrigin:'50% 50%'});}});
+            confettiBurst(1);
+          }else confettiBurst(.22);
+        }});
+    }else{hopTransform(targetX,HOP_Y);if(isFinal)confettiBurst(1);}
+  }
+};
+function hopSetTable(n){hop.table=n;hop.stepIdx=hop.dir>0?0:HOP_N;hopView.place();
+  $('#hopSay').innerHTML=`Skip counting by <b>${n}</b>. Press <b>Hop!</b> to watch the critter go ${hop.dir>0?'forward, multiplying':'backward, dividing'} one jump at a time.`;
+}
+$('#hopSet').onclick=()=>{const v=parseInt($('#hopTable').value,10);if(v>=1&&v<=12)hopSetTable(v);};
+$('#hopTable').onkeydown=e=>{if(e.key==='Enter')$('#hopSet').click();};
+$('#hopDir').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('#hopDir').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));hop.dir=+b.dataset.v;hopSetTable(hop.table);});
+$('#hopGo').onclick=()=>{
+  if(hop.dir>0){
+    if(hop.stepIdx>=12){$('#hopSay').innerHTML=`You've reached <b class="num">${12*hop.table}</b> — that's ${hop.table} × 12! Press "Set" to try another table.`;return;}
+    hop.stepIdx++;const before=(hop.stepIdx-1)*hop.table,after=hop.stepIdx*hop.table;
+    $('#hopSay').innerHTML=`${before} + ${hop.table} = <b class="num">${after}</b>. That's ${hop.stepIdx} hop${hop.stepIdx===1?'':'s'} of ${hop.table}: ${hop.stepIdx} × ${hop.table} = ${after}.`;
+    SFX.roll();hopView.go(after);award(2);
+  }else{
+    if(hop.stepIdx<=0){$('#hopSay').innerHTML=`You've hopped all the way back to 0! Press "Set" to try another table.`;return;}
+    const before=hop.stepIdx*hop.table;hop.stepIdx--;const after=hop.stepIdx*hop.table;
+    const done=HOP_N-hop.stepIdx;$('#hopSay').innerHTML=hop.stepIdx===0?`${before} − ${hop.table} = <b class="num">0</b>. You hopped back <b>${HOP_N}</b> times, so <b class="num">${HOP_N*hop.table} ÷ ${hop.table} = ${HOP_N}</b>!`:`${before} − ${hop.table} = <b class="num">${after}</b>. ${done} hop${done===1?'':'s'} back from ${HOP_N*hop.table} so far. Keep going until you reach 0, then count your hops.`;if(hop.stepIdx===0)confettiBurst(1);
+    SFX.roll();hopView.go(after);award(2);
+  }
+};
+
+/* ---------- multiplication table (Belt Dojo tab): reference grid + quiz-me mode ---------- */
+let mtQuiz=false,mtBlanked=new Set();
+function buildMultTable(){
+  let html='<table class="mtable" id="mtable"><thead><tr><th></th>'+Array.from({length:12},(_,i)=>i+1).map(c=>`<th data-c="${c}">${c}</th>`).join('')+'</tr></thead><tbody>';
+  for(let r=1;r<=12;r++){
+    html+=`<tr><th data-r="${r}">${r}</th>`+Array.from({length:12},(_,i)=>i+1).map(c=>`<td data-r="${r}" data-c="${c}" tabindex="0">${r*c}</td>`).join('')+'</tr>';
+  }
+  html+='</tbody></table>';
+  $('#multTable').innerHTML=html;
+  const table=$('#mtable');
+  table.addEventListener('mouseover',e=>{
+    const td=e.target.closest('td');if(!td)return;
+    highlightRC(td.dataset.r,td.dataset.c,true);
+  });
+  table.addEventListener('mouseout',e=>{
+    const td=e.target.closest('td');if(!td)return;
+    highlightRC(td.dataset.r,td.dataset.c,false);
+  });
+  table.addEventListener('click',e=>{
+    const td=e.target.closest('td');if(!td)return;
+    if(!mtQuiz)return;
+    const key=td.dataset.r+'-'+td.dataset.c;
+    if(mtBlanked.has(key)){mtBlanked.delete(key);td.classList.add('revealed');SFX.click();popMascot(td,false);setTimeout(()=>award(1),0);}
+  });
+}
+function highlightRC(r,c,on){
+  $('#mtable').querySelectorAll(`td[data-r="${r}"],td[data-c="${c}"]`).forEach(td=>{
+    if(td.dataset.r===r)td.classList.toggle('hl-row',on);
+    if(td.dataset.c===c)td.classList.toggle('hl-col',on);
+  });
+  const cell=$('#mtable').querySelector(`td[data-r="${r}"][data-c="${c}"]`);
+  if(cell)cell.classList.toggle('hl-cell',on);
+}
+function setQuizMode(on){
+  mtQuiz=on;
+  const btn=$('#mtQuizToggle');btn.textContent=on?'Show all answers':'Quiz me';
+  const cells=$('#mtable').querySelectorAll('td');
+  mtBlanked=new Set();
+  cells.forEach(td=>{
+    td.classList.remove('revealed');
+    if(on){td.classList.add('blank');mtBlanked.add(td.dataset.r+'-'+td.dataset.c);}
+    else td.classList.remove('blank');
+  });
+}
+$('#mtQuizToggle').onclick=()=>{SFX.click();setQuizMode(!mtQuiz);};
+buildMultTable();
+
+/* ---------- boot 2D visuals ---------- */
+arrUI();hopSetTable(4);
+$('#shareVis').innerHTML=shareSVG(12,3);
+$('#groupVis').innerHTML=groupsSVG(3,4);
+$('#subVis').innerHTML=subLadderSVG(15,5);
+
+})();
+</script>
+
+<!-- stacked-fractions v1 -->
+<style id="sf-style">
+.sf{position:relative;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;vertical-align:middle;line-height:1;margin:0 .1em;font-size:.88em;font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
+.sf::before{content:attr(data-n);display:block;padding:0 .16em .07em;border-bottom:.1em solid currentColor;min-width:.7em;text-align:center}
+.sf::after{content:attr(data-d);display:block;padding:.07em .16em 0;text-align:center}
+.sf-w{white-space:nowrap}
+.sf>.sf-src{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+</style>
+<script>
+(function(){
+  var UNI={'½':['1','2'],'¼':['1','4'],'¾':['3','4'],'⅓':['1','3'],'⅔':['2','3'],'⅕':['1','5'],'⅖':['2','5'],'⅗':['3','5'],'⅘':['4','5'],'⅙':['1','6'],'⅚':['5','6'],'⅛':['1','8'],'⅜':['3','8'],'⅝':['5','8'],'⅞':['7','8']};
+  var RE=/(^|[^\w\/.:\d])((\d{1,2}|\?|_{1,4})\/(\d{1,2}|\?|_{1,4}))(?![\d\/])|([¼-¾⅓-⅞])/g;
+  var SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,SELECT:1,OPTION:1,CODE:1,PRE:1,NOSCRIPT:1};
+  function skip(el){
+    for(var e=el;e&&e.nodeType===1;e=e.parentNode){
+      if(SKIP[e.nodeName]||e.namespaceURI==='http://www.w3.org/2000/svg'||(e.classList&&e.classList.contains('sf'))||(e.hasAttribute&&e.hasAttribute('data-nofrac')))return true;
+    }
+    return false;
+  }
+  function mk(src,n,d){var s=document.createElement('span');s.className='sf';s.setAttribute('data-n',n);s.setAttribute('data-d',d);var t=document.createElement('span');t.className='sf-src';t.textContent=src;s.appendChild(t);return s;}
+  function conv(tn){
+    var txt=tn.nodeValue;if(!txt||!(/\//.test(txt)||/[¼-¾⅓-⅞]/.test(txt)))return;
+    RE.lastIndex=0;var m,last=0,frag=null;
+    while((m=RE.exec(txt))){
+      if(!frag)frag=document.createDocumentFragment();
+      var start,src,n,d;
+      if(m[5]){start=m.index;src=m[5];n=UNI[src][0];d=UNI[src][1];}
+      else{start=m.index+m[1].length;src=m[2];n=m[3];d=m[4];if(n==='?'&&d==='?')continue;}
+      var pre='',end=start+src.length,post='';
+      var pm=/[(\[$]$/.exec(txt.slice(last,start));if(pm){pre=pm[0];start-=pre.length;}
+      var qm=/^[?.,!:;)\]%]+/.exec(txt.slice(end));if(qm)post=qm[0];
+      if(start>last)frag.appendChild(document.createTextNode(txt.slice(last,start)));
+      var sfEl=mk(src,n,d);
+      if(pre||post){var w=document.createElement('span');w.className='sf-w';if(pre)w.appendChild(document.createTextNode(pre));w.appendChild(sfEl);if(post)w.appendChild(document.createTextNode(post));frag.appendChild(w);}
+      else frag.appendChild(sfEl);
+      last=end+post.length;RE.lastIndex=Math.max(RE.lastIndex,last);
+    }
+    if(!frag)return;
+    if(last<txt.length)frag.appendChild(document.createTextNode(txt.slice(last)));
+    tn.parentNode.replaceChild(frag,tn);
+  }
+  function walk(root){
+    if(!root)return;
+    if(root.nodeType===3){if(root.parentNode&&!skip(root.parentNode))conv(root);return;}
+    if(root.nodeType!==1&&root.nodeType!==11)return;
+    if(root.nodeType===1&&skip(root))return;
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),list=[],n;
+    while((n=w.nextNode()))list.push(n);
+    for(var i=0;i<list.length;i++){var p=list[i].parentNode;if(p&&!skip(p))conv(list[i]);}
+  }
+  /* ---- SVG <text>: rebuild as a stacked group (denominator sits on the original baseline) ---- */
+  var NS='http://www.w3.org/2000/svg',SRE=/(\d{1,2})\/(\d{1,2})(?![\d\/])|([¼-¾⅓-⅞])/g;
+  function tok(s){var out=[],m,last=0;SRE.lastIndex=0;while((m=SRE.exec(s))){if(m.index>0&&!m[3]&&/[\d\/]/.test(s[m.index-1]))continue;if(m.index>last)out.push({t:s.slice(last,m.index)});out.push(m[3]?{n:UNI[m[3]][0],d:UNI[m[3]][1]}:{n:m[1],d:m[2]});last=m.index+m[0].length;}if(!out.length)return null;if(last<s.length)out.push({t:s.slice(last)});return out;}
+  function svgText(t){
+    if(t.getAttribute('data-sfdone')||t.querySelector('tspan'))return;
+    var s=t.textContent,toks=tok(s);if(!toks)return;
+    var cs=getComputedStyle(t),fs=parseFloat(t.getAttribute('font-size'))||parseFloat(cs.fontSize)||13,ff=0.8*fs;
+    var x=parseFloat(t.getAttribute('x'))||0,y=parseFloat(t.getAttribute('y'))||0;
+    var db=t.getAttribute('dominant-baseline')||'';if(/middle|central/.test(db))y+=0.35*fs;
+    var anc=t.getAttribute('text-anchor')||cs.textAnchor||'start';
+    function meas(str,size){var e=document.createElementNS(NS,'text');copy(t,e);e.setAttribute('font-size',size);e.removeAttribute('text-anchor');e.textContent=str;t.parentNode.appendChild(e);var w=0;try{w=e.getComputedTextLength();}catch(_){}e.parentNode.removeChild(e);return w>0?w:str.length*size*0.62;}
+    var parts=toks.map(function(k){if(k.t!=null)return {k:k,w:meas(k.t,fs)};var w=Math.max(meas(k.n,ff),meas(k.d,ff))+0.3*fs;return {k:k,w:w};});
+    var tot=parts.reduce(function(a,p){return a+p.w;},0),cx=anc==='middle'?x-tot/2:anc==='end'?x-tot:x;
+    var g=document.createElementNS(NS,'g');g.setAttribute('data-sfsrc',s);
+    var col=t.getAttribute('fill')||cs.fill||'#3B2A4A';
+    parts.forEach(function(p){
+      if(p.k.t!=null){var e=document.createElementNS(NS,'text');copy(t,e);e.setAttribute('x',cx);e.setAttribute('y',y);e.setAttribute('text-anchor','start');e.textContent=p.k.t;g.appendChild(e);}
+      else{var mx=cx+p.w/2,ly=y-0.62*fs;
+        var a=document.createElementNS(NS,'text');copy(t,a);a.setAttribute('font-size',ff);a.setAttribute('x',mx);a.setAttribute('y',ly-0.12*fs);a.setAttribute('text-anchor','middle');a.textContent=p.k.n;g.appendChild(a);
+        var l=document.createElementNS(NS,'line');l.setAttribute('x1',cx+0.12*fs);l.setAttribute('x2',cx+p.w-0.12*fs);l.setAttribute('y1',ly);l.setAttribute('y2',ly);l.setAttribute('stroke',col);l.setAttribute('stroke-width',Math.max(1.2,fs*0.09));l.setAttribute('stroke-linecap','round');g.appendChild(l);
+        var d=document.createElementNS(NS,'text');copy(t,d);d.setAttribute('font-size',ff);d.setAttribute('x',mx);d.setAttribute('y',y);d.setAttribute('text-anchor','middle');d.textContent=p.k.d;g.appendChild(d);}
+      cx+=p.w;});
+    var svg=t.ownerSVGElement;if(svg)svg.style.overflow='visible';
+    t.parentNode.replaceChild(g,t);
+  }
+  function copy(src,dst){for(var i=0;i<src.attributes.length;i++){var a=src.attributes[i];if(!/^(x|y|dx|dy|text-anchor|dominant-baseline|data-sfdone)$/.test(a.name))dst.setAttribute(a.name,a.value);}dst.setAttribute('data-sfdone','1');}
+  function walkSvg(root){
+    if(!root||root.nodeType!==1)return;
+    var list=root.nodeName.toLowerCase()==='text'?[root]:root.querySelectorAll?Array.prototype.slice.call(root.querySelectorAll('svg text')):[];
+    if(root.closest&&root.closest('[data-nofrac]'))return;
+    for(var i=0;i<list.length;i++){var t=list[i];if(t.isConnected&&!t.closest('[data-nofrac]'))try{svgText(t);}catch(_){}}
+  }
+  /* keep "?" "." etc. from wrapping away when the fraction sits inside <b>, <span> ... */
+  function glue(root){
+    if(!root||!root.querySelectorAll)return;
+    var list=root.classList&&root.classList.contains('sf')?[root]:root.querySelectorAll('.sf');
+    if(!root.isConnected)return;
+    for(var i=0;i<list.length;i++){var sf=list[i],el=sf;if(!sf.isConnected)continue;
+      while(el&&!el.nextSibling&&el.parentNode&&/^(B|STRONG|I|EM|SPAN|U|MARK)$/.test(el.parentNode.nodeName)&&!el.parentNode.classList.contains('sf-w'))el=el.parentNode;
+      if(!el||el===sf||!el.parentNode||(el.parentNode.classList&&el.parentNode.classList.contains('sf-w')))continue;var nx=el.nextSibling;if(!nx||nx.nodeType!==3)continue;
+      var m=/^[?.,!:;)\]%]+/.exec(nx.nodeValue);if(!m)continue;
+      var w=document.createElement('span');w.className='sf-w';el.parentNode.insertBefore(w,el);w.appendChild(el);w.appendChild(document.createTextNode(m[0]));nx.nodeValue=nx.nodeValue.slice(m[0].length);}
+  }
+  window.sfWalk=walk;
+  function start(){
+    walk(document.body);walkSvg(document.body);glue(document.body);
+    new MutationObserver(function(ms){
+      for(var i=0;i<ms.length;i++){var m=ms[i];try{
+        if(m.type==='characterData'){walk(m.target);}
+        else for(var j=0;j<m.addedNodes.length;j++){var an=m.addedNodes[j];try{walk(an);if(an.nodeType===1)glue(an);else if(an.parentNode)glue(an.parentNode);if(an.nodeType===1)walkSvg(an);else if(an.parentNode&&an.parentNode.nodeName&&an.parentNode.nodeName.toLowerCase()==='text')walkSvg(an.parentNode);}catch(_){}}}catch(_){}}
+    }).observe(document.body,{childList:true,subtree:true,characterData:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+</body></html>
