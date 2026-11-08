@@ -614,7 +614,7 @@ details.gu.lessons[open]>summary{margin-bottom:12px}
           <li><b>Start with ⚡ Sprint</b> (1 minute). It times every answer and colors the Fact Map: green = fast and right twice in a row, yellow = right but slow (still counting), pink = missed.</li>
           <li>Sprints pick her pink and yellow facts more often, so they turn green over time. "Flip it" mode pairs each × fact with its ÷ fact.</li>
           <li>Start each session in the Array Builder or Skip-Count Hopper for 3–5 minutes, then do one Practice Pod round.</li>
-          <li>Stay on <b>Grade level</b> until she gets about 5 in a row, then try <b>AAP challenge</b>.</li>
+          <li>Stay on <b>Grade level</b> until she gets about 5 in a row, then try <b>Brain Stretch</b> (the harder level).</li>
           <li>The Belt Dojo is meant to be revisited daily — a couple of belts a week is plenty.</li>
           <li>Every question has a "Show me how" explanation, so the answer key is built in.</li>
           <li>A movement break pops up every so often. Progress saves in this browser only.</li>
@@ -793,7 +793,7 @@ function recordHit(a,b){const k=Math.min(a,b)+'x'+Math.max(a,b);if(S.weak[k]){S.
 function pickWeak(){const keys=Object.keys(S.weak);if(!keys.length)return null;const k=pick(keys);const [a,b]=k.split('x').map(Number);return {a,b,misses:S.weak[k]};}
 const BADGES=[
   ['mult','Array Ace','10 Multiplication answers'],['div','Division Detective','10 Division answers'],
-  ['aap','AAP Brain','5 AAP answers'],['streak','Hot Streak','7 in a row'],
+  ['aap','Brain Stretcher','5 Brain Stretch answers'],['streak','Hot Streak','7 in a row'],
   ['dojo','Black Belt','Earn all 12 belts'],['mock','Mock Test Master','10+ on the SOL Mock Test']
 ];
 const LEVELS=['Fluff Sprout','Puff Cadet','Cloud Hopper','Number Ninja','Graph Star','Math Marshmallow','Legend of Fluff'];
@@ -1116,7 +1116,7 @@ const U2={grade:[
 /* ---------- practice pod (reusable multiplication / division practice engine) ---------- */
 function makePod(root,cfg){
   let mode='grade',q=null,misses=0,done=false,run=0;
-  root.innerHTML=`<div class="pod-top"><div class="seg" role="tablist"><button class="on" data-m="grade" role="tab">Grade level</button><button data-m="aap" role="tab">AAP challenge ★</button></div><div class="pod-stat">Streak <b class="ps num">0</b></div></div>
+  root.innerHTML=`<div class="pod-top"><div class="seg" role="tablist"><button class="on" data-m="grade" role="tab">Grade level</button><button data-m="aap" role="tab">Brain Stretch ★</button></div><div class="pod-stat">Streak <b class="ps num">0</b></div></div>
   <div class="qcard"><div class="qvis"></div><p class="qp"></p><div class="qans"></div>
   <div class="fb" aria-live="polite"><span>${mascot(cfg.m,46)}</span><span class="fb-t"></span></div>
   <div class="explain" hidden></div>
@@ -1129,7 +1129,7 @@ function makePod(root,cfg){
   function next(){
     q=pick(cfg.gens[mode])();misses=0;done=false;
     el('.qvis').innerHTML=q.visual||'';el('.qp').innerHTML=q.prompt;el('.explain').innerHTML=q.explain;el('.explain').hidden=true;
-    const fb=el('.fb');fb.className='fb';el('.fb-t').textContent=mode==='aap'?'AAP level. Take your time!':'You can do it!';
+    const fb=el('.fb');fb.className='fb';el('.fb-t').textContent=mode==='aap'?'Brain Stretch! Take your time.':'You can do it!';
     const box=el('.qans');box.innerHTML='';
     if(q.choices){const g=document.createElement('div');g.className='choices';
       q.choices.forEach(c=>{const b=document.createElement('button');b.className='choice';b.textContent=c;b.onclick=()=>check(c,b);g.appendChild(b);});box.appendChild(g);}
