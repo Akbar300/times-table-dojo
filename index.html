@@ -303,6 +303,39 @@ details.gu>summary{cursor:pointer;font-family:var(--disp);font-size:15px;color:v
 @media (min-width:760px){#skcCard{grid-column:span 2}}
 #hopStage{min-height:0!important;height:auto!important;padding:14px 8px!important}
 #hopSvg{width:100%;height:auto;display:block}
+/* ===== v2: Sprint, heat map, house, pad ===== */
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:340px;margin:0 auto;width:100%;touch-action:manipulation}
+.pad button{font-family:var(--disp);font-size:28px;height:58px;border:2.5px solid var(--ink);border-radius:16px;background:#fff;box-shadow:3px 3px 0 var(--ink);color:var(--ink);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;cursor:pointer;padding:0}
+.pad button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);background:var(--lemonS)}
+.pad .k-del{background:var(--pinkS)} .pad .k-skip{font-size:15px;background:var(--lilacS)}
+.sp-run{display:grid;gap:10px}
+.sp-top{display:flex;gap:10px;align-items:center}
+.sp-timer{flex:1;height:16px;border:2.5px solid var(--ink);border-radius:99px;background:var(--skyS);overflow:hidden}
+.sp-timer i{display:block;height:100%;background:var(--sky);width:100%}
+.sp-timer.low i{background:var(--pink)}
+.sp-score{font-family:var(--disp);font-size:22px;min-width:64px;text-align:right}
+.sp-flip{text-align:center;font-weight:900;color:#5B3FB5;min-height:22px;font-size:14px}
+.sp-q{font-family:var(--disp);font-size:clamp(46px,13vw,66px);text-align:center;line-height:1.1;font-variant-numeric:tabular-nums}
+.sp-a{font-family:var(--disp);font-size:40px;text-align:center;height:62px;line-height:56px;border:3px dashed #D9BFD0;border-radius:16px;max-width:200px;margin:0 auto;width:100%;background:#fff}
+.sp-a.ok{border:3px solid var(--good);background:var(--mintS)} .sp-a.no{border:3px solid var(--bad);background:#FFC9DA;animation:shake .35s;font-size:26px}
+.sp-intro{display:grid;gap:14px;justify-items:center;text-align:center}
+.sp-best{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.bigstart{font-size:22px;padding:14px 30px}
+.sp-res{display:grid;gap:12px;justify-items:center;text-align:center}
+.sp-big{font-family:var(--disp);font-size:52px;line-height:1}
+.chiplist{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.chiplist span{font-family:var(--disp);font-size:15px;background:var(--pinkS);border:2px solid var(--ink);border-radius:10px;padding:3px 9px}
+.heat{border-collapse:separate;border-spacing:3px;width:100%;table-layout:fixed;font-family:var(--disp)}
+.heat th{font-size:13px;color:var(--ink2);font-weight:400;padding:0}
+.heat td{height:34px;border-radius:8px;text-align:center;font-size:11.5px;cursor:pointer;border:1.5px solid rgba(59,42,74,.25);padding:0}
+.h-u{background:#F1EAF5;color:transparent}.h-r{background:#FF9DBB}.h-y{background:#FFE27A}.h-g{background:#8EEBC2}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;font-weight:700;justify-content:center}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:1.5px solid rgba(59,42,74,.3)}
+.housebox{width:min(260px,88%);margin:0 auto}
+.housebox svg,.tribox svg{width:100%;height:auto;display:block}
+details.gu.lessons>summary{font-size:15px;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 14px}
+details.gu.lessons[open]>summary{margin-bottom:12px}
+.bk textarea{width:100%;min-height:70px;font:12px monospace;border:2px solid var(--line);border-radius:10px;padding:8px}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -336,6 +369,7 @@ details.gu>summary{cursor:pointer;font-family:var(--disp);font-size:15px;color:v
 
   <nav class="nav" aria-label="Sections">
     <ul role="tablist">
+      <li><button type="button" class="tabbtn" role="tab" data-tab="sprint">⚡ Sprint</button></li>
       <li><button type="button" class="tabbtn" role="tab" data-tab="tables">Table Studio</button></li>
       <li><button type="button" class="tabbtn" role="tab" data-tab="mult">Multiplication</button></li>
       <li><button type="button" class="tabbtn" role="tab" data-tab="div">Division &amp; Families</button></li>
@@ -344,13 +378,21 @@ details.gu>summary{cursor:pointer;font-family:var(--disp);font-size:15px;color:v
     </ul>
   </nav>
 
+  <!-- ============ SPRINT ============ -->
+  <section class="unit" id="sprint">
+    <div class="unit-head"><span class="unit-tag">SPRINT</span><h2>Fact Sprint</h2></div>
+    <div class="say"><span data-m="lemi" data-s="64"></span><p class="bubble">60 seconds. Tap the answer on the number pad. How many can you get? Beat your best!</p></div>
+    <div class="pod sticker" id="spBox"></div>
+    <div class="pod sticker" id="heatBox"></div>
+  </section>
+
   <!-- ============ TABLE STUDIO ============ -->
   <section class="unit" id="tables">
     <div class="unit-head">
       <span class="unit-tag">TABLE STUDIO</span>
       <h2>One Table at a Time</h2>
     </div>
-    <div class="say"><span data-m="taki" data-s="64"></span><p class="bubble">Pick a number, then Hop it, Fill it, Learn it, Quiz it. Green tables are ones you know (2s, 3s, 4s, 5s, 10s). The <b>6s</b> are the ones you're learning now!</p></div>
+    <div class="say"><span data-m="taki" data-s="64"></span><p class="bubble">Pick a number, then Hop it, Fill it, Learn it, Quiz it. A table turns <b>green</b> when every fact in it is green on your Fact Map. The <b>now</b> table is the one with your trickiest facts.</p></div>
     <div class="tchips" id="tChips" role="tablist" aria-label="Choose a times table"></div>
     <div id="tPage" style="display:grid;gap:14px"></div>
   </section>
@@ -363,6 +405,7 @@ details.gu>summary{cursor:pointer;font-family:var(--disp);font-size:15px;color:v
     </div>
     <div class="say"><span data-m="momo" data-s="64"></span><p class="bubble">Momo here! Multiplication is just fast adding — the same number, over and over. Let's build it, group it, and flip it around.</p></div>
 
+    <details class="gu lessons"><summary>📖 How it works (tap to open the lessons)</summary>
     <div class="learn">
       <div class="lcard">
         <h3>Equal groups</h3>
@@ -416,6 +459,7 @@ details.gu>summary{cursor:pointer;font-family:var(--disp);font-size:15px;color:v
         <div class="ex">6 tables, 4 chairs at each table. How many chairs in all? 6 × 4 = 24.</div>
       </div>
     </div>
+    </details>
 
     <div class="lab sticker" id="arrayLab">
       <div class="lab-head">
@@ -453,6 +497,7 @@ details.gu>summary{cursor:pointer;font-family:var(--disp);font-size:15px;color:v
     </div>
     <div class="say"><span data-m="kumo" data-s="64"></span><p class="bubble">Kumo says: division is the un-doer of multiplication. Share it out evenly, or subtract the same amount again and again.</p></div>
 
+    <details class="gu lessons"><summary>📖 How it works (tap to open the lessons)</summary>
     <div class="learn">
       <div class="lcard">
         <h3>Equal sharing</h3>
@@ -486,23 +531,17 @@ details.gu>summary{cursor:pointer;font-family:var(--disp);font-size:15px;color:v
         <ul><li>n ÷ 1 = n (7 ÷ 1 = 7)</li><li>n ÷ n = 1, if n isn't 0 (7 ÷ 7 = 1)</li><li>0 ÷ n = 0 (0 ÷ 7 = 0)</li><li>You can never divide by 0.</li></ul>
       </div>
     </div>
+    </details>
 
     <div class="lab sticker" id="triLab">
       <div class="lab-head">
         <div>
-          <p class="sub">Fact Family Triangle <span class="chip">Interactive lab</span></p>
-          <p>Every triangle holds two factors and their product. Tap "New family" for numbers, then reveal all four related facts.</p>
+          <p class="sub">Fact Family House <span class="chip">Interactive lab</span></p>
+          <p>The <b>big number</b> lives on the roof. The two small numbers live in the rooms. One house, four facts!</p>
         </div>
         <button class="btn sm pink" id="triNew">New family</button>
       </div>
-      <div class="tri-wrap">
-        <div class="tri" id="triShape">
-          <svg viewBox="0 0 100 87" aria-hidden="true"><polygon points="50,4 6,82 94,82" fill="#EFE8FF" stroke="#3B2A4A" stroke-width="3"/></svg>
-          <span class="tnum t1" id="triTop">18</span>
-          <span class="tnum t2" id="triL">3</span>
-          <span class="tnum t3" id="triR">6</span>
-        </div>
-      </div>
+      <div class="housebox" id="triShape"></div>
       <div class="row" style="justify-content:center"><button class="btn mint" id="triReveal">Show the family</button></div>
       <ul class="famlist" id="triFacts" hidden></ul>
     </div>
@@ -572,12 +611,22 @@ details.gu>summary{cursor:pointer;font-family:var(--disp);font-size:15px;color:v
       <details class="pc" open>
         <summary>How to use this page</summary>
         <ul>
+          <li><b>Start with ⚡ Sprint</b> (1 minute). It times every answer and colors the Fact Map: green = fast and right twice in a row, yellow = right but slow (still counting), pink = missed.</li>
+          <li>Sprints pick her pink and yellow facts more often, so they turn green over time. "Flip it" mode pairs each × fact with its ÷ fact.</li>
           <li>Start each session in the Array Builder or Skip-Count Hopper for 3–5 minutes, then do one Practice Pod round.</li>
           <li>Stay on <b>Grade level</b> until she gets about 5 in a row, then try <b>AAP challenge</b>.</li>
           <li>The Belt Dojo is meant to be revisited daily — a couple of belts a week is plenty.</li>
           <li>Every question has a "Show me how" explanation, so the answer key is built in.</li>
           <li>A movement break pops up every so often. Progress saves in this browser only.</li>
         </ul>
+      </details>
+      <details class="pc bk">
+        <summary>Backup or move progress (phone ↔ tablet)</summary>
+        <p style="font-size:14px;margin:4px 0 8px">Progress lives only in this browser. To move it: tap <b>Make backup code</b>, copy the code, send it to the other device, paste it there and tap <b>Restore</b>.</p>
+        <div class="row"><button class="btn sm mint" id="bkMake">Make backup code</button><button class="btn sm white" id="bkCopy">Copy</button></div>
+        <textarea id="bkOut" readonly placeholder="Your backup code appears here"></textarea>
+        <textarea id="bkIn" placeholder="Paste a backup code here" style="margin-top:8px"></textarea>
+        <div class="row"><button class="btn sm pink" id="bkRestore">Restore</button><span id="bkMsg" style="font-weight:700;font-size:14px"></span></div>
       </details>
       <details class="pc">
         <summary>What she should be able to do (FCPS Units 3, 6, 9 &amp; 12)</summary>
@@ -678,9 +727,9 @@ setMuteBtn();
 $('#muteBtn').onclick=()=>{SFX.toggleMute();setMuteBtn();if(!SFX.isMuted())SFX.click();};
 
 /* ---------- tabs: one section visible at a time ---------- */
-const TABS=['tables','mult','div','dojo','mock'];
+const TABS=['sprint','tables','mult','div','dojo','mock'];
 function showTab(id){
-  if(!TABS.includes(id))id='tables';
+  if(!TABS.includes(id))id='sprint';
   TABS.forEach(t=>{const el=document.getElementById(t);if(el)el.hidden=(t!==id);});
   document.querySelectorAll('.nav button.tabbtn').forEach(b=>{const on=b.dataset.tab===id;b.classList.toggle('active',on);b.setAttribute('aria-selected',String(on));});
   try{history.replaceState(null,'',location.pathname+location.search+'#t-'+id);}catch(e){}
@@ -774,6 +823,29 @@ function award(xp,unit,aap){
   save();hud(true);
 }
 hud();
+
+/* ---------- v2 fluency core: per-fact speed + accuracy ---------- */
+if(!S.ff)S.ff={};
+if(!S.sprint)S.sprint={best:{},runs:[]};
+const FAST=3500; /* ms; a correct answer faster than this counts as "fast" */
+BADGES.push(['sprint20','Speedy Fluff','20+ right in one Sprint'],['allgreen','Fact Master','All 45 × facts green']);
+function fKey(op,a,b){return op==='m'?'m'+Math.min(a,b)+'x'+Math.max(a,b):'d'+a+'x'+b;}
+function fRec(op,a,b,ok,ms){const k=fKey(op,a,b);const f=S.ff[k]||{n:0,ok:0,t:0,h:''};f.n++;if(ok){f.ok++;const m=Math.min(ms,15000);f.t=f.t?Math.round(f.t*.6+m*.4):m;}f.h=(f.h+(ok?(ms<=FAST?'g':'y'):'r')).slice(-4);S.ff[k]=f;}
+function fStat(op,a,b){const f=S.ff[fKey(op,a,b)];if(!f||!f.h)return 'u';const h=f.h;if(h.slice(-1)==='r')return 'r';if(h.slice(-2)==='gg')return 'g';return 'y';}
+function tableMastered(n){if(n>10)return false;for(let k=2;k<=10;k++)if(fStat('m',n,k)!=='g')return false;return true;}
+function multGreenCount(){let c=0;for(let a=2;a<=10;a++)for(let b=a;b<=10;b++)if(fStat('m',a,b)==='g')c++;return c;}
+function divGreenCount(){let c=0;for(let a=2;a<=10;a++)for(let b=2;b<=10;b++)if(fStat('d',a,b)==='g')c++;return c;}
+function focusTable(){const W={r:3,y:1,u:.5,g:0};let best=7,bs=-1;const order=[7,8,6,4,9,3,2,5,10];for(const n of order){let sc=0;for(let k=2;k<=10;k++)sc+=W[fStat('m',n,k)];if(sc>bs){bs=sc;best=n;}}return best;}
+/* Fact House: big number on the roof, two factors in the rooms */
+function houseSVG(p,a,b,hide,show,fill){
+  const T=(x,y,v,fs,c)=>`<text x="${x}" y="${y}" text-anchor="middle" font-family="Mochiy Pop One,Zen Maru Gothic,sans-serif" font-size="${fs}" fill="${c||'#3B2A4A'}">${v}</text>`;
+  const slot=(x,y,v,fs,hid)=>hid&&!show?`<rect x="${x-26}" y="${y-30}" width="52" height="40" rx="9" fill="#fff" stroke="#3B2A4A" stroke-width="2.6"/>`+T(x,y,'?',fs-4):T(x,y,v,fs,hid?'#D63A72':'#3B2A4A');
+  return `<svg viewBox="0 0 220 196" role="img" aria-label="Fact family house: ${p} on the roof, ${a} and ${b} in the rooms">
+  <polygon points="12,86 110,10 208,86" fill="#FFE27A" stroke="#3B2A4A" stroke-width="3.5" stroke-linejoin="round"/>
+  <rect x="26" y="86" width="168" height="100" rx="4" fill="${fill||'#EFE8FF'}" stroke="#3B2A4A" stroke-width="3.5"/>
+  <line x1="110" y1="86" x2="110" y2="186" stroke="#3B2A4A" stroke-width="3"/>
+  ${slot(110,72,p,32,hide==='top')}${slot(68,150,a,30,hide==='l')}${slot(152,150,b,30,hide==='r')}</svg>`;
+}
 
 /* ---------- Skip-counting visual (learn cards: number strip + build-up), one shared number picker ---------- */
 (function(){
@@ -1090,7 +1162,7 @@ makePod($('#podDiv'),{unit:'div',m:'kumo',gens:U2});
 /* ---------- fact family triangle ---------- */
 function triNew(){
   const a=R(2,9),b=R(2,9);const p=a*b;
-  $('#triTop').textContent=p;$('#triL').textContent=a;$('#triR').textContent=b;
+  $('#triShape').innerHTML=houseSVG(p,a,b,null,false,'#EFE8FF');
   $('#triFacts').hidden=true;
   $('#triFacts').innerHTML=`<li>${a} × ${b} = ${p}</li><li>${b} × ${a} = ${p}</li><li>${p} ÷ ${a} = ${b}</li><li>${p} ÷ ${b} = ${a}</li>`;
 }
@@ -1240,7 +1312,7 @@ $('#beltOp').addEventListener('click',e=>{const b=e.target.closest('button');if(
   if(!S.tbl)S.tbl={};
   const TCOL={2:'#FF9EC4',3:'#8FD3FF',4:'#FFD24D',5:'#8EEBC2',6:'#FFB36B',7:'#B79CFF',8:'#FF8FB8',9:'#7CC8F5',10:'#6FDCAB',11:'#F4CF4C',12:'#A98BF5'};
   const TBG={2:'#FFE3EE',3:'#E4F5FF',4:'#FFF6D1',5:'#DFF9EC',6:'#FFEBD6',7:'#EFE8FF',8:'#FFE3EE',9:'#E4F5FF',10:'#DFF9EC',11:'#FFF6D1',12:'#EFE8FF'};
-  const KNOWN=[2,3,4,5,10],NOW=6;
+  const NOW=focusTable();
   const INFO={
    2:{mas:'momo',line:'Doubles! Every answer is a number added to itself.',trick:'Double it: <b>2 × 7</b> is 7 + 7.',ex:'2 × 7 = 7 + 7 = 14',fun:'All the answers are even: 2, 4, 6, 8, 10…'},
    3:{mas:'kumo',line:'Three hops at a time. Say it, hop it, tap it on your fingers.',trick:'Double it, then add one more group: <b>3 × 6</b> = (2 × 6) + 6.',ex:'3 × 6 = 12 + 6 = 18',fun:'The answers go odd, even, odd, even: 3, 6, 9, 12, 15…'},
@@ -1258,7 +1330,7 @@ $('#beltOp').addEventListener('click',e=>{const b=e.target.closest('button');if(
   let cur=null,hopK=0,circHelp=null,coverOn=false;
   const chips=$('#tChips'),page=$('#tPage');
   function chipsRender(){
-    chips.innerHTML=Array.from({length:11},(_,i)=>i+2).map(n=>`<button type="button" role="tab" class="tchip${cur===n?' on':''}${(S.tbl[n]&&S.tbl[n].best>=7)?' done':''}${n>10?' bonus':''}${KNOWN.includes(n)?' known':''}${n===NOW?' now':''}" data-n="${n}" aria-selected="${cur===n}" title="${n>10?'Bonus table':'The '+n+'s'}">${n}s</button>`).join('');
+    chips.innerHTML=Array.from({length:11},(_,i)=>i+2).map(n=>`<button type="button" role="tab" class="tchip${cur===n?' on':''}${(S.tbl[n]&&S.tbl[n].best>=7)?' done':''}${n>10?' bonus':''}${tableMastered(n)?' known':''}${n===focusTable()?' now':''}" data-n="${n}" aria-selected="${cur===n}" title="${n>10?'Bonus table':'The '+n+'s'}">${n}s</button>`).join('');
     chips.querySelectorAll('.tchip').forEach(b=>b.onclick=()=>{SFX.click();open(+b.dataset.n);});
   }
   function dotsFor(k,n,col){return `<i>${('<b style="--c:'+col+'"></b>').repeat(n)}</i>`.repeat(k);}
@@ -1284,7 +1356,7 @@ $('#beltOp').addEventListener('click',e=>{const b=e.target.closest('button');if(
   }
   function render(){
     const n=cur,I=INFO[n],col=TCOL[n];
-    if(circHelp==null)circHelp=KNOWN.includes(n)?'solo':'start';
+    if(circHelp==null)circHelp='solo';
     const rows=Array.from({length:10},(_,i)=>i+1).map(k=>`<div class="lrow"><span class="eq num">${n} × ${k}</span><span class="dots">${dotsFor(k,n,col).slice(0,5000)}</span><span class="ans num" tabindex="0" role="button" aria-label="Show answer to ${n} times ${k}">${n*k}</span></div>`).join('');
     page.style.setProperty('--tbg',TBG[n]);
     page.innerHTML=`<div class="thead">${mascot(I.mas,64)}<div><h3>The ${n}s table${n>10?' (bonus)':''}</h3><p>${I.line}</p></div></div>
@@ -1299,8 +1371,8 @@ $('#beltOp').addEventListener('click',e=>{const b=e.target.closest('button');if(
       <div class="tcard"><h4>4 · Trick <em>REMEMBER</em></h4><div class="trick"><span>${I.trick}</span><span class="ex">${I.ex}</span></div><div class="tsol"><b>Pattern:</b> ${I.fun}</div>
         <div class="tsol"><b>On the SOL:</b> they may ask "Which number sentence shows ${[3,4,5,6][n%4]} groups of ${n}?" or give a picture of equal groups. Read what is asked, then pick the sentence that matches.</div>
         <div class="trow"><button class="btn sm pink" id="toBelt">Train the ${n}s belt →</button><button class="btn sm white" id="toPrint">Print worksheet</button></div></div>
-      <div class="tcard wide"><h4>5 · Undo it <em>÷ DIVISION</em></h4><p style="margin:0;font-size:15px">Multiplication and division are a team. The top of the triangle is the product. Cover the top: <b>multiply</b>. Cover a bottom number: <b>divide</b>.</p>
-        <div class="trirow"><div class="tribox" id="tsTriBox"></div><div style="display:grid;gap:8px;align-content:center"><div class="trow"><button class="btn sm white" data-h="top">Cover the top</button><button class="btn sm white" data-h="l">Cover left</button><button class="btn sm white" data-h="r">Cover right</button></div><p class="hopsay num" id="tsTriSay" aria-live="polite"></p><div class="trow"><button class="btn sm mint" id="tsTriShow">Show me</button><button class="btn sm pink" id="tsTriNew">New numbers</button></div></div></div></div>
+      <div class="tcard wide"><h4>5 · Undo it <em>÷ DIVISION</em></h4><p style="margin:0;font-size:15px">Multiplication and division are a team. The <b>big number</b> lives on the roof. Cover the roof: <b>multiply</b>. Cover a room: <b>divide</b>.</p>
+        <div class="trirow"><div class="tribox" id="tsTriBox"></div><div style="display:grid;gap:8px;align-content:center"><div class="trow"><button class="btn sm white" data-h="top">Cover the roof</button><button class="btn sm white" data-h="l">Cover left room</button><button class="btn sm white" data-h="r">Cover right room</button></div><p class="hopsay num" id="tsTriSay" aria-live="polite"></p><div class="trow"><button class="btn sm mint" id="tsTriShow">Show me</button><button class="btn sm pink" id="tsTriNew">New numbers</button></div></div></div></div>
       <div class="tcard wide"><h4>6 · Quick quiz <em>8 QUESTIONS</em></h4><div class="pod sticker" id="tQuiz"></div></div>
     </div>`;
     wire();
@@ -1325,7 +1397,7 @@ $('#beltOp').addEventListener('click',e=>{const b=e.target.closest('button');if(
     const box=(x,y,v,hid)=>hid&&!show?`<rect x="${x-20}" y="${y-22}" width="40" height="30" rx="7" fill="#fff" stroke="#3B2A4A" stroke-width="2.4"/>`+T(x,y,'?',18):T(x,y,v,22,hid?'#D63A72':'#3B2A4A');
     return `<svg viewBox="0 0 ${s+12} ${h+8}" role="img" aria-label="fact family triangle"><path d="M${s/2+6} 8 L${s+2} ${h} L10 ${h} Z" fill="${TBG[cur]}" stroke="#3B2A4A" stroke-width="3" stroke-linejoin="round"/><line x1="${s*.25+8}" x2="${s*.75+6}" y1="${h*.55}" y2="${h*.55}" stroke="#3B2A4A" stroke-width="1.6" stroke-dasharray="4 3"/>${T(s/2+6,h*.55+19,'× ÷',14,'#6E5A7E')}${box(s/2+6,h*.42,p,hide==='top')}${box(s*.26,h-14,a,hide==='l')}${box(s*.8,h-14,b,hide==='r')}</svg>`;}
   function tri(n){let k=R(2,10),hide=null,show=false;
-    const draw=()=>{$('#tsTriBox').innerHTML=triSvg(n*k,n,k,hide,show);
+    const draw=()=>{$('#tsTriBox').innerHTML=houseSVG(n*k,n,k,hide,show,TBG[cur]);
       const say=$('#tsTriSay');
       if(!hide)say.innerHTML=`Facts: <b>${n} × ${k} = ${n*k}</b> · ${k} × ${n} = ${n*k} · <b>${n*k} ÷ ${n} = ${k}</b> · ${n*k} ÷ ${k} = ${n}`;
       else if(hide==='top')say.innerHTML=show?`${n} × ${k} = <b>${n*k}</b>`:`Multiply: <b>${n} × ${k} = ?</b>`;
@@ -1541,6 +1613,173 @@ arrUI();hopSetTable(4);
 $('#shareVis').innerHTML=shareSVG(12,3);
 $('#groupVis').innerHTML=groupsSVG(3,4);
 $('#subVis').innerHTML=subLadderSVG(15,5);
+/* ---------- v2: Fact Sprint (60s, number pad) + Fact Map ---------- */
+(function(){
+  const box=$('#spBox'),hbox=$('#heatBox');
+  const DUR=60000;
+  const MODES={m:{lab:'× Multiply',tip:'Multiplication facts 2–10, mixed.'},d:{lab:'÷ Divide',tip:'Division facts: think "what times this makes that?"'},f:{lab:'↔ Flip it',tip:'Each × fact flips into a ÷ fact right after. Same three numbers!'}};
+  let mode='m',st=null,heatOp='m';
+  try{const m=localStorage.getItem('g3-sprint-mode');if(MODES[m])mode=m;}catch(e){}
+
+  function pickFact(op,recent){
+    const W={r:5,y:3,u:2,g:1},items=[];let tot=0;
+    for(let a=2;a<=10;a++)for(let b=2;b<=10;b++){
+      if(op==='m'&&a>b)continue;
+      const k=fKey(op,a,b);if(recent.includes(k))continue;
+      let w=W[fStat(op,a,b)];
+      if([2,5,10].includes(a)||(op==='m'&&[2,5,10].includes(b)))w*=.5;
+      items.push([a,b,w]);tot+=w;
+    }
+    let r=Math.random()*tot;for(const it of items){r-=it[2];if(r<=0)return it;}
+    return items[items.length-1];
+  }
+  function makeQ(){
+    const recent=st.recent;
+    if(st.flipNext){const [a,b]=st.flipNext;st.flipNext=null;const dv=Math.random()<.5?[a,b]:[b,a];return {op:'d',a:dv[0],b:dv[1],text:`${a*b} ÷ ${dv[0]}`,ans:dv[1],flip:true};}
+    const op=mode==='d'?'d':'m';
+    const [a,b]=pickFact(op,recent);
+    if(op==='m'){const o=Math.random()<.5?[a,b]:[b,a];if(mode==='f')st.flipNext=o;return {op,a,b,text:`${o[0]} × ${o[1]}`,ans:a*b};}
+    return {op,a,b,text:`${a*b} ÷ ${a}`,ans:b};
+  }
+
+  function intro(){
+    st=null;
+    const best=S.sprint.best||{};
+    box.innerHTML=`<div class="sp-intro">
+      <div class="seg" id="spMode" role="group" aria-label="Sprint type">${Object.entries(MODES).map(([k,v])=>`<button type="button" data-v="${k}" class="${k===mode?'on':''}">${v.lab}</button>`).join('')}</div>
+      <p style="margin:0;color:var(--ink2);font-size:15px" id="spTip">${MODES[mode].tip}</p>
+      <div class="sp-best">${Object.entries(MODES).map(([k,v])=>`<div class="pill"><b class="num">${best[k]||0}</b><small>best ${v.lab.split(' ')[0]}</small></div>`).join('')}</div>
+      <button class="btn pink bigstart" id="spGo">Start! ⏱ 1 minute</button>
+      <p style="margin:0;font-size:13px;color:var(--ink2)">Stuck? Tap <b>Skip</b> to see the answer. No pressure, just try to beat your own score.</p></div>`;
+    box.querySelector('#spMode').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;SFX.click();mode=b.dataset.v;try{localStorage.setItem('g3-sprint-mode',mode);}catch(_){}box.querySelectorAll('#spMode button').forEach(x=>x.classList.toggle('on',x===b));$('#spTip').textContent=MODES[mode].tip;});
+    $('#spGo').onclick=()=>{SFX.click();countdown();};
+  }
+  function countdown(){
+    let n=3;box.innerHTML=`<div class="sp-intro"><div class="sp-big num" id="spCd">3</div><p style="margin:0">Get ready…</p></div>`;
+    {const nv=document.querySelector('.nav');const y=box.getBoundingClientRect().top+scrollY-(nv?nv.offsetHeight:0)-8;window.scrollTo(0,y);}
+    const t=setInterval(()=>{n--;if(n<=0){clearInterval(t);run();}else{$('#spCd').textContent=n;SFX.click();}},650);
+  }
+  function run(){
+    st={score:0,tries:0,missed:[],recent:[],flipNext:null,q:null,typed:'',lock:false,t0:Date.now(),qt:0,greens0:multGreenCount()+divGreenCount(),done:false};
+    box.innerHTML=`<div class="sp-run">
+      <div class="sp-top"><div class="sp-timer" id="spT"><i id="spBar"></i></div><span class="sp-score num" id="spScore">0 ✓</span></div>
+      <div class="sp-flip" id="spFlip"></div>
+      <div class="sp-q num" id="spQ" aria-live="polite"></div>
+      <div class="sp-a num" id="spA"></div>
+      <div class="pad" id="spPad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button type="button" data-k="${d}">${d}</button>`).join('')}<button type="button" class="k-del" data-k="del" aria-label="Delete">⌫</button><button type="button" data-k="0">0</button><button type="button" class="k-skip" data-k="skip">Skip</button></div>
+      <div class="row" style="justify-content:center"><button class="btn sm white" id="spStop">Stop</button></div></div>`;
+    $('#spPad').addEventListener('pointerdown',e=>{const b=e.target.closest('button');if(!b)return;e.preventDefault();press(b.dataset.k);});
+    $('#spStop').onclick=()=>finish(true);
+    next();tick();
+  }
+  function next(){
+    if(!st||st.done)return;
+    st.q=makeQ();st.typed='';st.lock=false;st.qt=Date.now();
+    const k=fKey(st.q.op,st.q.a,st.q.b);st.recent.push(k);if(st.recent.length>5)st.recent.shift();
+    $('#spQ').textContent=st.q.text+' =';$('#spFlip').textContent=st.q.flip?'↔ Flip it! Same numbers, now divide.':'';
+    const A=$('#spA');A.className='sp-a num';A.textContent='';
+  }
+  function press(k){
+    if(!st||st.done||st.lock)return;
+    const ans=String(st.q.ans);
+    if(k==='del'){st.typed=st.typed.slice(0,-1);$('#spA').textContent=st.typed;return;}
+    if(k==='skip'){answer(false,true);return;}
+    if(st.typed.length>=3)return;
+    st.typed+=k;$('#spA').textContent=st.typed;
+    if(st.typed===ans)answer(true);
+    else if(st.typed.length>=ans.length)answer(false);
+  }
+  function answer(ok,skipped){
+    const q=st.q,ms=Date.now()-st.qt;st.lock=true;st.tries++;
+    fRec(q.op,q.a,q.b,ok,ms);
+    const A=$('#spA');
+    if(ok){
+      st.score++;SFX.right();A.classList.add('ok');$('#spScore').textContent=st.score+' ✓';
+      if(q.op==='m')recordHit(q.a,q.b);
+      setTimeout(next,170);
+    }else{
+      SFX.wrong();A.classList.add('no');A.textContent=`${q.text} = ${q.ans}`;
+      if(q.op==='m')recordMiss(q.a,q.b);
+      st.missed.push(`${q.text} = ${q.ans}`);
+      setTimeout(next,skipped?1300:1500);
+    }
+  }
+  function tick(){
+    if(!st||st.done)return;
+    const left=Math.max(0,DUR-(Date.now()-st.t0));
+    const bar=$('#spBar');if(!bar)return;
+    bar.style.width=(left/DUR*100)+'%';$('#spT').classList.toggle('low',left<10000);
+    if(left<=0){finish(false);return;}
+    requestAnimationFrame(tick);
+  }
+  function finish(stopped){
+    if(!st||st.done)return;st.done=true;
+    const prev=(S.sprint.best||{})[mode]||0,score=st.score;
+    S.sprint.best=S.sprint.best||{};
+    const counted=!stopped;
+    const pb=counted&&score>prev;
+    if(counted){S.sprint.best[mode]=Math.max(prev,score);S.sprint.runs.push({d:Date.now(),m:mode,s:score,a:st.tries});if(S.sprint.runs.length>80)S.sprint.runs=S.sprint.runs.slice(-80);}
+    const gNow=multGreenCount()+divGreenCount(),newG=Math.max(0,gNow-st.greens0);
+    if(score>=20)badge('sprint20');if(multGreenCount()>=45)badge('allgreen');
+    save();award(Math.min(score,40));
+    if(pb){SFX.level();confettiBurst(1.5);}else if(score>0)confettiBurst(.5);
+    const miss=[...new Set(st.missed)].slice(0,10);
+    box.innerHTML=`<div class="sp-res">${mascot(pb?'lemi':'momo',84)}
+      <div class="sp-big num">${score}</div><p style="margin:0;font-weight:700">${stopped?'Stopped early (not counted for best).':`right in 1 minute${st.tries>score?` · ${st.tries-score} to practice`:''}`}</p>
+      <p style="margin:0;font-size:18px;font-weight:900;color:${pb?'var(--good)':'var(--ink2)'}">${pb?`🎉 New best! (old best ${prev})`:`Your best: ${Math.max(prev,score)}`}</p>
+      ${newG?`<p style="margin:0;font-weight:700">🟩 ${newG} fact${newG>1?'s':''} turned green on your Fact Map!</p>`:''}
+      ${miss.length?`<div><p style="margin:0 0 6px;font-weight:700">Facts to practice:</p><div class="chiplist num">${miss.map(m=>`<span>${m}</span>`).join('')}</div></div>`:'<p style="margin:0;font-weight:700">No misses. Amazing!</p>'}
+      <div class="row" style="justify-content:center"><button class="btn pink" id="spAgain">Go again</button><button class="btn white" id="spMap">See my Fact Map</button></div></div>`;
+    $('#spAgain').onclick=()=>{SFX.click();countdown();};
+    $('#spMap').onclick=()=>{SFX.click();hbox.scrollIntoView({block:'start',behavior:'smooth'});};
+    heat();
+  }
+  document.addEventListener('keydown',e=>{
+    if(!st||st.done||$('#sprint').hidden)return;
+    if(/^[0-9]$/.test(e.key)){e.preventDefault();press(e.key);}
+    else if(e.key==='Backspace'){e.preventDefault();press('del');}
+  });
+
+  function heat(){
+    const op=heatOp,tot=op==='m'?45:81,g=op==='m'?multGreenCount():divGreenCount();
+    let rows='<tr><th>'+(op==='m'?'×':'÷')+'</th>'+[2,3,4,5,6,7,8,9,10].map(c=>`<th>${op==='m'?c:'='+c}</th>`).join('')+'</tr>';
+    for(let r=2;r<=10;r++){
+      rows+=`<tr><th>${r}</th>`;
+      for(let c=2;c<=10;c++){
+        const s=fStat(op,r,c);
+        const label=op==='m'?`${r} × ${c} = ${r*c}`:`${r*c} ÷ ${r} = ${c}`;
+        rows+=`<td class="h-${s}" data-l="${label}" data-r="${r}" data-c="${c}">${s==='g'?(op==='m'?r*c:r*c):''}</td>`;
+      }
+      rows+='</tr>';
+    }
+    hbox.innerHTML=`<div class="row" style="justify-content:space-between"><p class="sub" style="margin:0">My Fact Map <span class="chip">${g} / ${tot} green</span></p>
+      <div class="seg" id="hOp"><button type="button" data-v="m" class="${op==='m'?'on':''}">×</button><button type="button" data-v="d" class="${op==='d'?'on':''}">÷</button></div></div>
+      <p style="margin:0;font-size:14px;color:var(--ink2)">${op==='m'?'Rows × columns. 7 × 8 and 8 × 7 are the same fact.':'Row = the number you divide by. Column = the answer.'} Tap a square to see the fact.</p>
+      <div class="xpbar" style="height:14px"><i style="width:${Math.round(g/tot*100)}%;background:var(--mint)"></i></div>
+      <table class="heat num">${rows}</table>
+      <div class="legend"><span><i class="h-g"></i>Fast &amp; right</span><span><i class="h-y"></i>Right, still slow</span><span><i class="h-r"></i>Missed last time</span><span><i class="h-u"></i>Not tried yet</span></div>`;
+    hbox.querySelector('#hOp').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;SFX.click();heatOp=b.dataset.v;heat();});
+    hbox.querySelector('.heat').addEventListener('click',e=>{const td=e.target.closest('td');if(!td)return;const f=S.ff[fKey(op,+td.dataset.r,+td.dataset.c)];SFX.click();toast(td.dataset.l+(f&&f.ok?` · about ${(f.t/1000).toFixed(1)}s`:'')+(f?` · tried ${f.n}×`:' · not tried yet'));});
+  }
+  intro();heat();
+
+  /* backup / restore */
+  const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+  const dec=t=>JSON.parse(decodeURIComponent(escape(atob(t.trim()))));
+  const mk=$('#bkMake');
+  if(mk){
+    mk.onclick=()=>{save();$('#bkOut').value='TTD1:'+enc(S);$('#bkMsg').textContent='Code ready. Copy it.';};
+    $('#bkCopy').onclick=async()=>{const v=$('#bkOut').value;if(!v){$('#bkMsg').textContent='Make the code first.';return;}try{await navigator.clipboard.writeText(v);$('#bkMsg').textContent='Copied!';}catch(e){$('#bkOut').select();$('#bkMsg').textContent='Select all and copy.';}};
+    let armed=false;
+    $('#bkRestore').onclick=()=>{
+      const v=$('#bkIn').value.trim();let o;
+      try{if(!v.startsWith('TTD1:'))throw 0;o=dec(v.slice(5));if(typeof o!=='object'||o.xp==null)throw 0;}catch(e){$('#bkMsg').textContent='That code does not look right.';return;}
+      if(!armed){armed=true;$('#bkRestore').textContent='Tap again to replace progress';$('#bkMsg').textContent=`Backup has ${o.xp} XP.`;return;}
+      try{localStorage.setItem(KEY,JSON.stringify(o));}catch(e){}
+      $('#bkMsg').textContent='Restored! Reloading…';setTimeout(()=>location.reload(),600);
+    };
+  }
+})();
 
 })();
 </script>
